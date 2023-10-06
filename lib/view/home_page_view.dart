@@ -59,9 +59,9 @@ class _HomePageState extends State<HomePage> {
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)
                             )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: null,
+                          onPressed: (){},
                           child: Row(
                            mainAxisAlignment: MainAxisAlignment.center,
                            crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,9 +93,9 @@ class _HomePageState extends State<HomePage> {
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)
                             )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: null,
+                          onPressed: () {},
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,9 +132,9 @@ class _HomePageState extends State<HomePage> {
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)
                             )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: null,
+                          onPressed: (){},
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,9 +166,9 @@ class _HomePageState extends State<HomePage> {
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)
                             )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: null,
+                          onPressed: (){},
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -205,9 +205,9 @@ class _HomePageState extends State<HomePage> {
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)
                             )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: null,
+                          onPressed: (){},
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
