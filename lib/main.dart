@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:recipedia/view/home_page_view.dart';
-=======
 import 'package:recipedia/view/landing_page_view.dart';
->>>>>>> a7c8162a7b0ec85c1e7663b3ee8b650dc3686c4d
 
 void main() {
   runApp(const MyApp());
@@ -16,14 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
+        title: 'Flutter Demo',
+        theme: ThemeData(
 
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: LandingPage()//home: ,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: LandingPage() //home: ,
     );
   }
-
-  	
+}  
