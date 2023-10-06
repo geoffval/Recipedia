@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,11 +13,29 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Expanded(child: HomePageController(context))
+          Expanded(
+            flex: 1,
+              child: _buildImage()
+          ),
+          Expanded(
+            flex: 3,
+              child: HomePageController(context)
+          )
         ],
       ),
+    );
+  }
+
+  Widget _buildImage() {
+    return Container(
+        padding: EdgeInsets.only(top:0,bottom:0),
+        child: Align(
+          alignment: FractionalOffset.bottomCenter,
+          child: Image.asset('assets/logo_recipedia.png', scale: 2),
+        )
     );
   }
 
@@ -29,7 +44,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Image.asset('assets/images/Recipedia 1.png'),
+          //Image.asset('assets/images/Recipedia 1.png'),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -37,8 +52,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                      height: 120,
-                      width: 120,
+                      height: 110,
+                      width: 110,
                       child: ElevatedButton(
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
@@ -53,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                            children: <Widget>[
                              Icon(
                                Icons.person,
-                               size: 70,)
+                               size: 62,)
                            ],
                           )
                       )
@@ -71,8 +86,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                      height: 120,
-                      width: 120,
+                      height: 110,
+                      width: 110,
                       child: ElevatedButton(
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
@@ -87,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                             children: <Widget>[
                               Icon(
                                 Icons.info,
-                                size: 70,)
+                                size: 62,)
                             ],
                           )
                       )
@@ -110,8 +125,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                      height: 120,
-                      width: 120,
+                      height: 110,
+                      width: 110,
                       child: ElevatedButton(
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
@@ -126,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                             children: <Widget>[
                               Icon(
                                 Icons.book,
-                                size: 70,)
+                                size: 62,)
                             ],
                           )
                       )
@@ -144,8 +159,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                      height: 120,
-                      width: 120,
+                      height: 110,
+                      width: 110,
                       child: ElevatedButton(
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
@@ -160,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                             children: <Widget>[
                               Icon(
                                 Icons.bookmark_add,
-                                size: 70,)
+                                size: 62,)
                             ],
                           )
                       )
@@ -183,8 +198,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                      height: 120,
-                      width: 120,
+                      height: 110,
+                      width: 110,
                       child: ElevatedButton(
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
@@ -199,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                             children: <Widget>[
                               Icon(
                                 Icons.my_library_books,
-                                size: 70,
+                                size: 62,
                               )
                             ],
                           )
