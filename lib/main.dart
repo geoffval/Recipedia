@@ -16,16 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-<<<<<<< HEAD
       title: 'Flutter Demo',
       theme: ThemeData(
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-=======
       home: LandingPage()//home: ,
->>>>>>> a7c8162a7b0ec85c1e7663b3ee8b650dc3686c4d
     );
   }
 
