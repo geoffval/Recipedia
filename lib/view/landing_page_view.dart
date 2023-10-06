@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipedia/view/home_page_view.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -117,7 +118,11 @@ class _LandingPageState extends State<LandingPage> {
                 decorationThickness: 1.3
               ),
             ),
-            onPressed: () {},
+            onPressed: (){
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+            },
           ),
         )
       ],
