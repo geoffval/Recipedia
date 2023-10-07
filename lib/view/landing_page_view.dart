@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/view/home_page_view.dart';
+import 'package:recipedia/view/login.dart';
+import 'package:recipedia/view/register.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -44,7 +46,9 @@ class _LandingPageState extends State<LandingPage> {
           height: 60,
           child: ElevatedButton(
             onPressed: (){
-
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => LoginPage())
+              );
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(
@@ -58,7 +62,7 @@ class _LandingPageState extends State<LandingPage> {
                 )
             ),
               child: Text(
-                  'SIGN UP',
+                  'LOGIN',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -72,10 +76,12 @@ class _LandingPageState extends State<LandingPage> {
           height: 60,
           child: ElevatedButton (
             onPressed: (){
-
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const RegisterPage())
+              );
             },
             child: Text(
-                'LOGIN',
+                'SIGN UP',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -120,7 +126,7 @@ class _LandingPageState extends State<LandingPage> {
             ),
             onPressed: (){
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage(name: 'Guest',email:'',password: '',)),
               );
             },
           ),
