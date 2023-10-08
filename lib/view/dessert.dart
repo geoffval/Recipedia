@@ -1,121 +1,282 @@
 import 'package:flutter/material.dart';
 
-class DessertScreen extends StatelessWidget {
+class DessertScreen extends StatefulWidget {
   const DessertScreen({super.key});
+
+  @override
+  State createState() => _DessertScreenState();
+}
+
+
+class _DessertScreenState extends State<DessertScreen> {
+  final scrollController = ScrollController();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('Dessert'),
+            title: Text('DESSERT'),
             actions: <Widget>[
               Padding(padding: const EdgeInsets.all(10.0),
                   child: Icon(Icons.food_bank)
               ),
             ]
         ),
-        body: Container(
-          padding: EdgeInsets.only(top:30),
-          child: Column(
+        body: buildScroll()
+    );
+  }
+
+  Widget buildScroll() {
+    return Scrollbar(
+      child: ListView.builder(
+          controller: scrollController,
+          itemCount: 1,
+          itemBuilder: (context, index) => buildList(index)
+      ),
+    );
+  }
+
+  Column buildList(int index) {
+    return Column(
+        children: [
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top:20, left: 25),
-                      width: 150,
-                      height: 150,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/images/dessert1.jpg', scale: 1.6,
-                          ),
-                        ],
-                      ),
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
                     ),
-                    Container(
-                      padding:EdgeInsets.only(top: 10),
-                      width: 150,
-                      height: 100,
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/dessert1.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Pancake'),
-                          Padding(padding: EdgeInsets.only(top: 10)),
+                          SizedBox(height: 10),
                           Text('Hidangan pancake yang  lembut dengan maple sirup yang lezat')
                         ],
                       ),
-                    ),
-                  ],
+                    )
                 ),
-                Row(
-                  mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only( left: 5),
-                      width: 200,
-                      height: 150,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/images/dessert2.jpg',scale: 1.7,
-                          ),
-                        ],
-                      ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
                     ),
-                    Container(
-                      padding:EdgeInsets.only(top: 4, right: 15),
-                      width: 150,
-                      height: 180,
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/dessert2.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Waffle'),
-                          Padding(padding: EdgeInsets.only(top: 10,right: 15)),
-                          Text('Hidangan waffle yang renyah diluar dan lembut didalam dengan tambahan buah blueberry dan strawberry yang segar')
+                          SizedBox(height: 10),
+                          Text('Hidangan waffle yang lembut dengan tambahan buah yang segar')
                         ],
                       ),
-                    ),
-                  ],
+                    )
                 ),
-
-                Row(
-                  mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 5),
-                      width: 200,
-                      height: 150,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/images/dessert3.jpg',scale: 1.6,
-                          ),
-                        ],
-                      ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
                     ),
-                    Container(
-                      padding:EdgeInsets.only(top: 10, right: 15),
-                      width: 150,
-                      height: 150,
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/dessert3.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Pudding'),
-                          Padding(padding: EdgeInsets.only(top: 10)),
-                          Text('Hidangan pudding yang lembut dan sangat lezat')
+                          SizedBox(height: 10),
+                          Text('Minuman segar yang dihasilkan dari perasan buah jeruk yang nikmat')
                         ],
                       ),
-                    ),
-                  ],
+                    )
                 ),
-
-              ]
+              ],
+            ),
           ),
-        )
+          SizedBox(height: 10),
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
+                    ),
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/dessert4.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Pie'),
+                          SizedBox(height: 10),
+                          Text('Pie yang lembut dengan tambahan buah-buahan segar')
+                        ],
+                      ),
+                    )
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
+                    ),
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/dessert5.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Salad'),
+                            SizedBox(height: 10),
+                            Text('Hidangan penutup berupa potongan sayuran yang nikmat')
+                          ]
+                      ),
+                    )
+                ),
+              ],
+            ),
+          ),
+
+
+        ]
     );
   }
 }
