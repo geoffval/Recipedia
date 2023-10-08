@@ -62,6 +62,7 @@ flutter:
   assets:
     - assets/images/
     - assets/logo_recipedia.png
+
   #   - images/a_dot_ham.jpeg
 
 
