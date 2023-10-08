@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipedia/view/home_page_view.dart';
 import 'package:recipedia/view/landing_page_view.dart';
-import 'package:recipedia/view/login.dart';
 
 
 void main() {

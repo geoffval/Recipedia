@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+
+  final String name;
+  final String email;
+  final String password;
+
+  const AccountScreen({super.key, required this.name, required this.email, required this.password});
+
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
@@ -12,6 +18,8 @@ class _AccountScreenState extends State<AccountScreen> {
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
+
+
 
   bool loggedIn = false;
   late String name;
@@ -76,16 +84,17 @@ class _AccountScreenState extends State<AccountScreen> {
                 ]
             ),
             TextFormField(
-              controller: _nameController,
+              initialValue: widget.name,
               decoration: InputDecoration(labelText: 'Username'),
             ),
             TextFormField(
-              controller: _emailController,
+
+              initialValue: widget.email,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(labelText: 'Email'),
             ),
             TextFormField(
-              controller: _passwordController,
+              initialValue: widget.password,
               decoration: InputDecoration(labelText: 'Password'),
             ),
             SizedBox(height: 20),
