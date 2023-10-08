@@ -8,10 +8,14 @@ import 'package:recipedia/view/recipes_categories_view.dart';
 class RecipesPage extends StatefulWidget {
   @override
   State<RecipesPage> createState() => _RecipesPageState();
+
+
 }
 
-class _RecipesPageState extends State<RecipesPage> {
+bool _addOrEditRecipes = true;
+bool get addOrEditRecipes => _addOrEditRecipes;
 
+class _RecipesPageState extends State<RecipesPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +228,12 @@ class _RecipesPageState extends State<RecipesPage> {
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: (){},
+                        onPressed: (){
+                            _addOrEditRecipes = false;
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => RecipesCategoriesPage()),
+                          );
+                        },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -259,6 +268,7 @@ class _RecipesPageState extends State<RecipesPage> {
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
                           onPressed: (){
+                            _addOrEditRecipes = true;
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => RecipesCategoriesPage()),
                             );

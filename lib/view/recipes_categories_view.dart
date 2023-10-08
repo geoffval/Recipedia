@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:recipedia/view/about.dart';
-import 'package:recipedia/view/account.dart';
+import 'package:recipedia/view/add_recipes_view.dart';
+import 'package:recipedia/view/edit_recipes_view.dart';
+import 'recipes_menu_view.dart' as recipes_menu;
+
+int _recipeItem = 1;
+int get recipeItem => _recipeItem;
+//1 = food, 2 = drinks, 3 = dessert, 4 = pastries
 
 class RecipesCategoriesPage extends StatefulWidget {
   @override
@@ -8,7 +13,7 @@ class RecipesCategoriesPage extends StatefulWidget {
 }
 
 class _RecipesCategoriesPageState extends State<RecipesCategoriesPage> {
-
+  final bool addOrEdit = recipes_menu.addOrEditRecipes;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +62,16 @@ class _RecipesCategoriesPageState extends State<RecipesCategoriesPage> {
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
                           onPressed: (){
-
+                            _recipeItem = 1;
+                            if(addOrEdit){
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => AddRecipesScreen()),
+                              );
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => EditRecipesScreen()),
+                              );
+                            }
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +107,16 @@ class _RecipesCategoriesPageState extends State<RecipesCategoriesPage> {
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
                           onPressed: (){
-
+                            _recipeItem = 2;
+                            if(addOrEdit){
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => AddRecipesScreen()),
+                              );
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => EditRecipesScreen()),
+                              );
+                            }
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -134,7 +157,18 @@ class _RecipesCategoriesPageState extends State<RecipesCategoriesPage> {
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            _recipeItem = 3;
+                            if(addOrEdit){
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => AddRecipesScreen()),
+                              );
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => EditRecipesScreen()),
+                              );
+                            }
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,7 +203,18 @@ class _RecipesCategoriesPageState extends State<RecipesCategoriesPage> {
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            _recipeItem = 4;
+                            if(addOrEdit){
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => AddRecipesScreen()),
+                              );
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => EditRecipesScreen()),
+                              );
+                            }
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
