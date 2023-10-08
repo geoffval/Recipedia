@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/view/about.dart';
+import 'package:recipedia/view/account.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -68,7 +69,11 @@ class _HomePageState extends State<HomePage> {
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => const AccountScreen()),
+                            );
+                          },
                           child: Row(
                            mainAxisAlignment: MainAxisAlignment.center,
                            crossAxisAlignment: CrossAxisAlignment.center,
