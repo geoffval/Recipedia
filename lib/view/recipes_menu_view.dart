@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/view/about.dart';
 import 'package:recipedia/view/account.dart';
-import 'package:recipedia/view/recipes_menu_view.dart';
 
-class HomePage extends StatefulWidget {
-
-  final String name;
-  final String email;
-  final String password;
-
-  const HomePage({super.key, required this.name, required this.email, required this.password});
-
+class RecipesPage extends StatefulWidget {
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<RecipesPage> createState() => _RecipesPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _RecipesPageState extends State<RecipesPage> {
 
 
   @override
@@ -25,26 +17,25 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Expanded(
-            flex: 1,
-              child: _buildImage()
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              TextButton(
+                child: Icon(Icons.arrow_back_outlined),
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+              ),
+              SizedBox(width: 20,),
+              Text("RECIPES")
+            ],
           ),
           Expanded(
-            flex: 3,
+              flex: 3,
               child: HomePageController(context)
           )
         ],
       ),
-    );
-  }
-
-  Widget _buildImage() {
-    return Container(
-        padding: EdgeInsets.only(top:0,bottom:0),
-        child: Align(
-          alignment: FractionalOffset.bottomCenter,
-          child: Image.asset('assets/logo_recipedia.png', scale: 2),
-        )
     );
   }
 
@@ -71,27 +62,25 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
                           onPressed: (){
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => const AccountScreen()),
-                            );
+
                           },
                           child: Row(
-                           mainAxisAlignment: MainAxisAlignment.center,
-                           crossAxisAlignment: CrossAxisAlignment.center,
-                           children: <Widget>[
-                             Icon(
-                               Icons.person,
-                               size: 62,)
-                           ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.fastfood,
+                                size: 62,)
+                            ],
                           )
                       )
                   ),
                   Text(
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                      "Account"
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                      "Food"
                   )
                 ],
               ),
@@ -109,134 +98,16 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
                           onPressed: (){
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => const AboutScreen()),
-                            );
+
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Icon(
-                                Icons.info,
-                                size: 62,)
-                            ],
-                          )
-                      )
-                  ),
-                  Text(
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                      "About"
-                  )
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                      height: 110,
-                      width: 110,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
-                          ),
-                          onPressed: (){
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => RecipesPage()),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.book,
-                                size: 62,)
-                            ],
-                          )
-                      )
-                  ),
-                  Text(
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                      "Recipes"
-                  )
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                      height: 110,
-                      width: 110,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
-                          ),
-                          onPressed: (){},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.bookmark_add,
-                                size: 62,)
-                            ],
-                          )
-                      )
-                  ),
-                  Text(
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                      "Recipes Add"
-                  )
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                      height: 110,
-                      width: 110,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
-                          ),
-                          onPressed: (){},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.my_library_books,
+                                Icons.emoji_food_beverage,
                                 size: 62,
-                              )
+                                color: Colors.lightBlueAccent,)
                             ],
                           )
                       )
@@ -246,12 +117,87 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       ),
-                      "Recipes Edit"
+                      "Drinks"
                   )
                 ],
               ),
             ],
-          )
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                      height: 110,
+                      width: 110,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)
+                            )),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
+                          ),
+                          onPressed: (){},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.cake,
+                                size: 62,
+                                color: Colors.pinkAccent,)
+                            ],
+                          )
+                      )
+                  ),
+                  Text(
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                      "Cake"
+                  )
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                      height: 110,
+                      width: 110,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)
+                            )),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
+                          ),
+                          onPressed: (){},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.breakfast_dining,
+                                size: 62,
+                                color: Colors.brown,)
+                            ],
+                          )
+                      )
+                  ),
+                  Text(
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                      "Pastries"
+                  )
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     );
