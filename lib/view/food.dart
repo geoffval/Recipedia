@@ -29,7 +29,7 @@ class FoodScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/nasgor.jpg', scale: 1.6,
+                          Image.asset('assets/images/nasgor.jpg', scale: 1.6,
                           ),
                         ],
                       ),
@@ -60,7 +60,7 @@ class FoodScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/ayammie.jpg',scale: 1.7,
+                          Image.asset('assets/images/ayammie.jpg',scale: 1.7,
                           ),
                         ],
                       ),
@@ -92,7 +92,7 @@ class FoodScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/bakso.jpg',scale: 1.6,
+                          Image.asset('assets/images/bakso.jpg',scale: 1.6,
                           ),
                         ],
                       ),
