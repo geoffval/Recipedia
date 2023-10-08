@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/view/about.dart';
 import 'package:recipedia/view/account.dart';
+import 'package:recipedia/view/dessert.dart';
+import 'package:recipedia/view/drink.dart';
 import 'package:recipedia/view/food.dart';
+import 'package:recipedia/view/pastries.dart';
 import 'package:recipedia/view/recipes_categories_view.dart';
 
 class RecipesPage extends StatefulWidget {
@@ -97,7 +100,9 @@ class _RecipesPageState extends State<RecipesPage> {
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
                           onPressed: (){
-
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => DrinkScreen()),
+                            );
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -138,7 +143,11 @@ class _RecipesPageState extends State<RecipesPage> {
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => DessertScreen()),
+                            );
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +165,7 @@ class _RecipesPageState extends State<RecipesPage> {
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       ),
-                      "Cake"
+                      "Dessert"
                   )
                 ],
               ),
@@ -173,7 +182,11 @@ class _RecipesPageState extends State<RecipesPage> {
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => PastriesScreen()),
+                            );
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
