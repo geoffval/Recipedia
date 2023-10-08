@@ -40,32 +40,18 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-          title: Text('Account'),
-          backgroundColor: Colors.indigo
-          , actions: <Widget>[
-        Padding(padding: const EdgeInsets.all(10.0),
+      appBar: AppBar(
+          title: Text('ACCOUNT'),
+          actions: <Widget>[
+            Padding(padding: const EdgeInsets.all(10.0),
             child: Icon(Icons.account_box)
         )
       ]
-      ),*/
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                TextButton(
-                  child: Icon(Icons.arrow_back_outlined),
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                ),
-                SizedBox(width: 20,),
-                Text("ACCOUNT")
-              ],
-            ),
             _buildLoginForm()
           ],
         ),
