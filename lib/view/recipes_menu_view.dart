@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:recipedia/view/about.dart';
-import 'package:recipedia/view/account.dart';
 import 'package:recipedia/view/dessert.dart';
 import 'package:recipedia/view/drink.dart';
 import 'package:recipedia/view/food.dart';
