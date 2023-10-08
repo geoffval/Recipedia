@@ -1,121 +1,282 @@
 import 'package:flutter/material.dart';
 
-class DrinkScreen extends StatelessWidget {
+class DrinkScreen extends StatefulWidget {
   const DrinkScreen({super.key});
+
+  @override
+  State createState() => _DrinkScreenState();
+}
+
+
+class _DrinkScreenState extends State<DrinkScreen> {
+  final scrollController = ScrollController();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('Drink'),
+            title: Text('DRINK'),
             actions: <Widget>[
               Padding(padding: const EdgeInsets.all(10.0),
                   child: Icon(Icons.food_bank)
               ),
             ]
         ),
-        body: Container(
-          padding: EdgeInsets.only(top:30),
-          child: Column(
+        body: buildScroll()
+    );
+  }
+
+  Widget buildScroll() {
+    return Scrollbar(
+      child: ListView.builder(
+          controller: scrollController,
+          itemCount: 1,
+          itemBuilder: (context, index) => buildList(index)
+      ),
+    );
+  }
+
+  Column buildList(int index) {
+    return Column(
+        children: [
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top:30, left: 25),
-                      width: 150,
-                      height: 150,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/images/drink1.jpg', scale: 1.6,
-                          ),
-                        ],
-                      ),
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
                     ),
-                    Container(
-                      padding:EdgeInsets.only(top: 10),
-                      width: 150,
-                      height: 120,
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/drink1.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Thai tea'),
-                          Padding(padding: EdgeInsets.only(top: 10)),
-                          Text('Minum teh khas Thailand campuran dari susu dari teh yang nikmat')
+                          SizedBox(height: 10),
+                          Text('Minuman berupa campuran dari susu dan teh')
                         ],
                       ),
-                    ),
-                  ],
+                    )
                 ),
-                Row(
-                  mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only( left: 5),
-                      width: 200,
-                      height: 150,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/images/drink2.jpg',scale: 1.7,
-                          ),
-                        ],
-                      ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
                     ),
-                    Container(
-                      padding:EdgeInsets.only(top: 20, right: 15),
-                      width: 150,
-                      height: 180,
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/drink2.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Coffee Milkshake'),
-                          Padding(padding: EdgeInsets.only(top: 10,right: 15)),
-                          Text('Minuman dengan rasa yang kental dan lembut dengan paduan kopi dan coklat')
+                          SizedBox(height: 10),
+                          Text('Minuman berupa paduan kopi dan coklat')
                         ],
                       ),
-                    ),
-                  ],
+                    )
                 ),
-
-                Row(
-                  mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 5),
-                      width: 200,
-                      height: 150,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(padding: EdgeInsets.only(right: 30)),
-                          Image.asset('assets/images/drink3.jpg',scale: 1.6,
-                          ),
-                        ],
-                      ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
                     ),
-                    Container(
-                      padding:EdgeInsets.only(top: 10, right: 15),
-                      width: 150,
-                      height: 150,
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/drink3.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Orange Juice'),
-                          Padding(padding: EdgeInsets.only(top: 5)),
+                          SizedBox(height: 10),
                           Text('Minuman segar yang dihasilkan dari perasan buah jeruk yang nikmat')
                         ],
                       ),
-                    ),
-                  ],
+                    )
                 ),
-
-              ]
+              ],
+            ),
           ),
-        )
+          SizedBox(height: 10),
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
+                    ),
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/drink4.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Bandrek Susu'),
+                          SizedBox(height: 10),
+                          Text('Minuman herbal berupa jahe yang dicampur dengan susu kental manis')
+                        ],
+                      ),
+                    )
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            height: 150,
+            margin: EdgeInsets.only(left: 10,right: 10),
+            decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromRGBO(200, 200, 200, 0.8)
+            ),
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(227, 233, 227, 1)
+                    ),
+                    width: 130,
+                    height: 110,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset('assets/images/drink5.jpg')
+                ),
+                Expanded(
+                    child: Container(
+                      height: 135,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(227, 233, 227, 1)
+                      ),
+                      margin: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Espresso'),
+                          SizedBox(height: 10),
+                          Text('Biji kopi yang diseduh dengan tekanan tinggi menghasilkan ekstrak kopi')
+                        ]
+                      ),
+                    )
+                ),
+              ],
+            ),
+          ),
+
+
+        ]
     );
   }
 }
