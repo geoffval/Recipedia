@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/view/about.dart';
 import 'package:recipedia/view/account.dart';
-import 'package:recipedia/view/food.dart';
-import 'package:recipedia/view/recipes_categories_view.dart';
 
-class RecipesPage extends StatefulWidget {
+class RecipesCategoriesPage extends StatefulWidget {
   @override
-  State<RecipesPage> createState() => _RecipesPageState();
+  State<RecipesCategoriesPage> createState() => _RecipesCategoriesPageState();
 }
 
-class _RecipesPageState extends State<RecipesPage> {
+class _RecipesCategoriesPageState extends State<RecipesCategoriesPage> {
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MENU'),
+        title: Text('CATEGORIES'),
         actions: <Widget>[
           Padding(padding: const EdgeInsets.all(10.0),
               child: Icon(Icons.info)
@@ -59,9 +57,7 @@ class _RecipesPageState extends State<RecipesPage> {
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
                           onPressed: (){
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => FoodScreen()),
-                            );
+
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -192,83 +188,6 @@ class _RecipesPageState extends State<RecipesPage> {
                         fontSize: 24,
                       ),
                       "Pastries"
-                  )
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                      height: 110,
-                      width: 110,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
-                          ),
-                          onPressed: (){},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.my_library_books,
-                                size: 62,)
-                            ],
-                          )
-                      )
-                  ),
-                  Text(
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                      "Edit Recipes"
-                  )
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                      height: 110,
-                      width: 110,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
-                          ),
-                          onPressed: (){
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => RecipesCategoriesPage()),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.bookmark_add,
-                                size: 62,)
-                            ],
-                          )
-                      )
-                  ),
-                  Text(
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                      "Add Recipe"
                   )
                 ],
               ),
