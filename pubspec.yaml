@@ -62,6 +62,18 @@ flutter:
   assets:
     - assets/
     - assets/logo_recipedia.png
+    - assets/images/ayammie.jpg
+    - assets/images/bakso.jpg
+    - assets/images/nasgor.jpg
+    - assets/images/drink1.jpg
+    - assets/images/drink2.jpg
+    - assets/images/drink3.jpg
+    - assets/images/dessert1.jpg
+    - assets/images/dessert2.jpg
+    - assets/images/dessert3.jpg
+    - assets/images/pastries1.jpg
+    - assets/images/pastries2.jpg
+    - assets/images/pastries3.jpg
   #   - images/a_dot_ham.jpeg
 
 

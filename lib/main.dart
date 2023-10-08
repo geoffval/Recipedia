@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:recipedia/view/dessert.dart';
+import 'package:recipedia/view/drink.dart';
 import 'package:recipedia/view/home_page_view.dart';
 import 'package:recipedia/view/landing_page_view.dart';
 import 'package:recipedia/view/login.dart';
+import 'package:recipedia/view/pastries.dart';
 
 
 void main() {
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
           useMaterial3: true,
         ),
-        home: LandingPage()//home: ,
+        home: DrinkScreen()//home: ,
     );
   }
 }
