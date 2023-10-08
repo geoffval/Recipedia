@@ -13,23 +13,18 @@ class _RecipesCategoriesPageState extends State<RecipesCategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('CATEGORIES'),
+        actions: <Widget>[
+          Padding(padding: const EdgeInsets.all(10.0),
+              child: Icon(Icons.info)
+          )
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              TextButton(
-                child: Icon(Icons.arrow_back_outlined),
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-              ),
-              SizedBox(width: 20,),
-              Text("CATEGORIES")
-            ],
-          ),
           Expanded(
               flex: 3,
               child: HomePageController(context)

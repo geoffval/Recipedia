@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/view/about.dart';
 import 'package:recipedia/view/account.dart';
+import 'package:recipedia/view/food.dart';
 import 'package:recipedia/view/recipes_categories_view.dart';
 
 class RecipesPage extends StatefulWidget {
@@ -14,23 +15,18 @@ class _RecipesPageState extends State<RecipesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('MENU'),
+        actions: <Widget>[
+          Padding(padding: const EdgeInsets.all(10.0),
+              child: Icon(Icons.info)
+          )
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              TextButton(
-                child: Icon(Icons.arrow_back_outlined),
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-              ),
-              SizedBox(width: 20,),
-              Text("RECIPES")
-            ],
-          ),
           Expanded(
               flex: 3,
               child: HomePageController(context)
@@ -63,7 +59,9 @@ class _RecipesPageState extends State<RecipesPage> {
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
                           onPressed: (){
-
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => FoodScreen()),
+                            );
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
