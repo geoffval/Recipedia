@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/view/about.dart';
 import 'package:recipedia/view/account.dart';
-import 'package:recipedia/view/recipes_menu_view.dart';
+import 'recipes_menu_view.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -187,88 +187,8 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-
-              Container(
-                width: 120,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        height: 110,
-                        width: 110,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)
-                              )),
-                              backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
-                            ),
-                            onPressed: (){},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.bookmark_add,
-                                  size: 62,)
-                              ],
-                            )
-                        )
-                    ),
-                    Text(
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                        "Add Recipes"
-                    )
-                  ],
-                ),
-              )
             ],
           ),
-
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                      height: 110,
-                      width: 110,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
-                          ),
-                          onPressed: (){},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.my_library_books,
-                                size: 62,
-                              )
-                            ],
-                          )
-                      )
-                  ),
-                  Text(
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                      "Edit Recipes"
-                  )
-                ],
-              ),
-            ],
-          )
         ],
       ),
     );
