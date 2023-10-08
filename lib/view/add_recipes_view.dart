@@ -64,7 +64,9 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
             ),
             SizedBox(height: 20,),
             ElevatedButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.pop(context);
+                },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)
