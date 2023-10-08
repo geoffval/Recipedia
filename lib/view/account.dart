@@ -32,7 +32,7 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
           title: Text('Account'),
           backgroundColor: Colors.indigo
           , actions: <Widget>[
@@ -40,9 +40,27 @@ class _AccountScreenState extends State<AccountScreen> {
             child: Icon(Icons.account_box)
         )
       ]
-      ),
+      ),*/
       body: Center(
-        child: _buildLoginForm(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                TextButton(
+                  child: Icon(Icons.arrow_back_outlined),
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                ),
+                SizedBox(width: 20,),
+                Text("ACCOUNT")
+              ],
+            ),
+            _buildLoginForm()
+          ],
+        ),
       ),
     );
   }
@@ -61,14 +79,14 @@ class _AccountScreenState extends State<AccountScreen> {
     return Form(
       key: _formKey,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children:[
-                  Icon(Icons.account_box, size:100,color: Colors.blue),
+                  Icon(Icons.account_box, size:200),
                 ]
             ),
             TextFormField(
@@ -87,6 +105,11 @@ class _AccountScreenState extends State<AccountScreen> {
             SizedBox(height: 20),
             ElevatedButton(
                 onPressed: _validate,
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)
+                  )),
+                ),
                 child: Text('Save')
             ),
           ],
