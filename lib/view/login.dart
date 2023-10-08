@@ -112,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _passwordController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your password',
