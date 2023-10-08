@@ -7,7 +7,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child:  Scaffold(
-        appBar: AppBar(
+        /*appBar: AppBar(
           backgroundColor: Colors.indigo,
           title: Text('About'),
           actions: <Widget>[
@@ -15,13 +15,26 @@ class AboutScreen extends StatelessWidget {
                 child: Icon(Icons.info)
             )
           ],
-        ),
+        ),*/
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  TextButton(
+                    child: Icon(Icons.arrow_back_outlined),
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(width: 20,),
+                  Text("ABOUT")
+                ],
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: <Widget>[
                   Container(
                     width: 150,
                     height: 200,
