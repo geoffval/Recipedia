@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:recipedia/controls/db_helper.dart';
 import 'package:recipedia/view/login.dart';
+
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -9,23 +11,42 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _passwordVisible = false;
 
-  void _validate() {
+
+  void initState(){
+    super.initState();
+  }
+
+  Future<void> _validate() async {
     final form = _formKey.currentState;
     if (!form!.validate()) {
       return;
     }
+
+    SQLHelper.createItem(
+        _usernameController.text,
+        _emailController.text,
+        _passwordController.text
+    );
 
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => LoginPage()),
     );
   }
 
+
+
+
   @override
 
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
       body: Column(
         children: [
@@ -66,6 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _usernameController,
                   validator: (text) {
                     if (text!.isEmpty){
                       return 'Enter username!';
@@ -95,6 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _emailController,
                   validator: (text) {
                     if (text!.isEmpty){
                       return 'Enter email!';
@@ -128,16 +151,29 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _passwordController,
+                  obscureText: !_passwordVisible,
                   validator: (text) {
                     if (text!.isEmpty){
                       return 'Enter password!';
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 12),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                   ),
                 )
               ],

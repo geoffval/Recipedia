@@ -34,12 +34,15 @@ class _AccountScreenState extends State<AccountScreen> {
     final name= _nameController.text;
     final email = _emailController.text;
     final password = _passwordController;
+
+    
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       appBar: AppBar(
           title: Text('ACCOUNT'),
           actions: <Widget>[
@@ -105,7 +108,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       borderRadius: BorderRadius.circular(10.0)
                   )),
                 ),
-                child: Text('Save')
+                child: Text('Edit')
             ),
           ],
         ),

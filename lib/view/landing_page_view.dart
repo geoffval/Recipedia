@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:recipedia/view/home_page_view.dart';
 import 'package:recipedia/view/login.dart';
 import 'package:recipedia/view/register.dart';
 
@@ -8,6 +7,8 @@ class LandingPage extends StatefulWidget {
 
   @override
   State<LandingPage> createState() => _LandingPageState();
+
+
 }
 
 class _LandingPageState extends State<LandingPage> {
@@ -72,6 +73,18 @@ class _LandingPageState extends State<LandingPage> {
         ),
         const SizedBox(height: 20),
         SizedBox(
+          height: 30,
+          child: Text(
+            'or',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        SizedBox(
           width: 170,
           height: 60,
           child: ElevatedButton (
@@ -100,37 +113,7 @@ class _LandingPageState extends State<LandingPage> {
             ),
           )
         ),
-        SizedBox(height: 30),
-        SizedBox(
-          height: 30,
-          child: Text(
-            'or',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        SizedBox(
-          child:  TextButton(
-            child: const Text('Enter as Guest'),
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.black,
-              textStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
-                decorationThickness: 1.3
-              ),
-            ),
-            onPressed: (){
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomePage(name: 'Guest',email:'',password: '',)),
-              );
-            },
-          ),
-        )
+
       ],
     );
   }
