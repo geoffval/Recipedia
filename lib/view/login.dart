@@ -1,31 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:recipedia/view/home_page_view.dart';
+import 'package:recipedia/controls/db_helper.dart';
+import 'package:recipedia/view/register.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
+
 class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  List<Map<String, dynamic>> _account = [];
+  bool _isLoading = true;
+  bool accountFound = false;
+  bool _passwordVisible = false;
 
+  Future<void> _refreshAccountData() async {
+    final data = await SQLHelper.getItems();
+    setState(() {
+      _account = data;
+      _isLoading = false;
+    });
+  }
 
-  late String name;
+  @override
+  void initState(){
+    super.initState();
+    _refreshAccountData();
+  }
 
-  void _validate() {
+  void _validate() async {
     final form = _formKey.currentState;
     if (!form!.validate()) {
       return;
     }
 
-    final email = _emailController.text;
-    final password = _passwordController.text;
+    await _refreshAccountData();
 
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => HomePage(name: 'name', email: email, password: password)),
+    print("..number of items ${_account.length}");
+
+    _account.forEach((e) {
+      if (e['email'] == _emailController.text && e['password'] == _passwordController.text){
+        accountFound = true;
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => HomePage(name: e['username'], email: e['email'], password: e['password'])),
+        );
+      }
+
+      //UNTUK TESTING DELETE AKUN
+
+      // SQLHelper.deleteDog(e['id']);
+      // print("deleted" + e['username']);
+
+    });
+    if (!accountFound) showAlertDialog(context);
+  }
+
+  showAlertDialog(BuildContext context) {
+    Widget tryAgainButton = TextButton(
+      child: Text("TRY AGAIN"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        return;
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text("Couldn't find your account!"),
+      content: Text("Email or password might wrong, try again!"),
+      actions: [
+        tryAgainButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 
@@ -35,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
       body: Column(
         children: [
@@ -113,10 +170,22 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(
+                  obscureText: !_passwordVisible,
+                  decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 12),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                   ),
                   validator: (text) {
                     if (text!.isEmpty){
@@ -158,23 +227,12 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SizedBox(height: 10),
           SizedBox(
-            height: 30,
-            child: Text(
-              'or',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          SizedBox(
             child:  TextButton(
-              child: const Text('Enter as Guest'),
+              child: const Text('Doesn\'t have any account yet? register here'),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black,
                 textStyle: TextStyle(
-                    fontSize: 16,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
                     decorationThickness: 1.3
@@ -182,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => HomePage(name: 'Guest', email: '', password: '')),
+                  MaterialPageRoute(builder: (_) => RegisterPage()),
                 );
               },
             ),

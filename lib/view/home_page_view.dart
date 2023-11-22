@@ -40,10 +40,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildImage() {
     return Container(
-        padding: EdgeInsets.only(top:0,bottom:0),
         child: Align(
           alignment: FractionalOffset.bottomCenter,
-          child: Image.asset('assets/logo_recipedia.png', scale: 2),
+          child: Image.asset('assets/logo_recipedia.png')
         )
     );
   }
@@ -53,7 +52,6 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          //Image.asset('assets/images/Recipedia 1.png'),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
