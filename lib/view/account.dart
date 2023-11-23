@@ -1,12 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipedia/main.dart';
 
 class AccountScreen extends StatefulWidget {
-
-  final String name;
-  final String email;
-  final String password;
-
-  const AccountScreen({super.key, required this.name, required this.email, required this.password});
+  const AccountScreen({super.key});
 
 
   @override
@@ -18,33 +15,26 @@ class _AccountScreenState extends State<AccountScreen> {
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
-
-
+  final user = FirebaseAuth.instance.currentUser!;
 
   bool loggedIn = false;
   late String name;
 
 
-  void _validate(){
-    final form = _formKey.currentState;
-    if (!form!.validate()) {
-      return;
-    }
 
-    final name= _nameController.text;
-    final email = _emailController.text;
-    final password = _passwordController;
 
-    
-  }
+
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset : false,
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
           title: Text('ACCOUNT'),
+          backgroundColor: Colors.grey[100],
           actions: <Widget>[
             Padding(padding: const EdgeInsets.all(10.0),
             child: Icon(Icons.account_box)
@@ -72,6 +62,41 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
+  showAlertDialog(BuildContext context) {
+      Widget noButton = TextButton(
+        child: Text("No"),
+        onPressed: () {
+          Navigator.of(context).pop();
+          return;
+        },
+      );
+
+      Widget yesButton = TextButton(
+        child: Text("Yes"),
+        onPressed: () async {
+          Navigator.of(context).pop();
+          await FirebaseAuth.instance.signOut();
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+        },
+      );
+
+      AlertDialog alert = AlertDialog(
+        title: Text("You are about to logout"),
+        content: Text("Are you sure?"),
+        actions: [
+          yesButton,
+          noButton,
+        ],
+      );
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
   Widget _buildLoginForm() {
     return Form(
       key: _formKey,
@@ -87,29 +112,47 @@ class _AccountScreenState extends State<AccountScreen> {
                 ]
             ),
             TextFormField(
-              initialValue: widget.name,
+              initialValue: "Username (not working yet)",
               decoration: InputDecoration(labelText: 'Username'),
             ),
             TextFormField(
 
-              initialValue: widget.email,
+              initialValue: user.email!,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(labelText: 'Email'),
             ),
             TextFormField(
-              initialValue: widget.password,
+              initialValue: "Password (not working yet)",
               decoration: InputDecoration(labelText: 'Password'),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-                onPressed: _validate,
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)
-                  )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+
+              children: [
+                ElevatedButton(
+                    onPressed: (){},
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                      )),
+                    ),
+                    child: Text('Edit')
                 ),
-                child: Text('Edit')
-            ),
+                SizedBox(width: 30),
+                ElevatedButton(
+                    onPressed: () {
+                      showAlertDialog(context);
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)
+                      )),
+                    ),
+                    child: Text('Logout')
+                ),
+              ],
+            )
           ],
         ),
       ),
