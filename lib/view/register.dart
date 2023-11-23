@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipedia/controls/auth.dart';
 import 'package:recipedia/view/login.dart';
+
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -9,36 +12,60 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _passwordVisible = false;
 
-  void _validate() {
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future _validate() async {
     final form = _formKey.currentState;
     if (!form!.validate()) {
       return;
     }
-
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => LoginPage()),
-    );
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // Navigate to the home page after successful registration
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Auth()),
+      );
+    } catch (e) {
+      print("Error registering user: $e");
+      // Handle registration error if necessary
+    }
   }
 
-  @override
 
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          _buildImage(),
-          _buildButton(context)
-        ],
-      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildImage(),
+            _buildButton(context)
+          ],
+        ),
+      )
     );
   }
 
   Widget _buildImage() {
     return Container(
-        padding: EdgeInsets.only(top:20),
         child: Align(
           alignment: FractionalOffset.center,
           child: Image.asset('assets/logo_recipedia.png', scale: 2.3),
@@ -66,6 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _usernameController,
                   validator: (text) {
                     if (text!.isEmpty){
                       return 'Enter username!';
@@ -95,6 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _emailController,
                   validator: (text) {
                     if (text!.isEmpty){
                       return 'Enter email!';
@@ -128,22 +157,34 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _passwordController,
+                  obscureText: !_passwordVisible,
                   validator: (text) {
                     if (text!.isEmpty){
                       return 'Enter password!';
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 12),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                   ),
                 )
               ],
             ),
           ),
-          SizedBox(height: 20),
           SizedBox(
             width: 170,
             height: 60,
@@ -169,6 +210,29 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("Already a member?"),
+              SizedBox(
+                child:  TextButton(
+                  child: const Text('Login here'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.blue,
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => LoginPage()),
+                    );
+                  },
+                ),
+              )
+            ],
+          )
         ],
       )
     );

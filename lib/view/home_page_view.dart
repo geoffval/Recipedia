@@ -4,19 +4,13 @@ import 'package:recipedia/view/account.dart';
 import 'recipes_menu_view.dart';
 
 class HomePage extends StatefulWidget {
-
-  final String name;
-  final String email;
-  final String password;
-
-  const HomePage({super.key, required this.name, required this.email, required this.password});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +34,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildImage() {
     return Container(
-        padding: EdgeInsets.only(top:0,bottom:0),
         child: Align(
           alignment: FractionalOffset.bottomCenter,
-          child: Image.asset('assets/logo_recipedia.png', scale: 2),
+          child: Image.asset('assets/logo_recipedia.png')
         )
     );
   }
@@ -53,7 +46,6 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          //Image.asset('assets/images/Recipedia 1.png'),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -74,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             onPressed: (){
                               Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => AccountScreen(name: widget.name, password: widget.password,email: widget.email)),
+                                MaterialPageRoute(builder: (context) => AccountScreen()),
                               );
                             },
                             child: Row(

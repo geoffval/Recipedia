@@ -1,47 +1,51 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipedia/view/home_page_view.dart';
+import 'package:recipedia/view/register.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
+
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  bool _passwordVisible = false;
 
-
-  late String name;
-
-  void _validate() {
+  Future _validate() async {
     final form = _formKey.currentState;
     if (!form!.validate()) {
       return;
     }
-
-    final email = _emailController.text;
-    final password = _passwordController.text;
-
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => HomePage(name: 'name', email: email, password: password)),
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim()
     );
   }
 
-
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          _buildImage(),
-          _buildButton(context)
-        ],
-      ),
+      body: SingleChildScrollView(
+       child: Column(
+         children: [
+           _buildImage(),
+           _buildForm(context)
+         ],
+       ),
+      )
     );
   }
 
@@ -56,8 +60,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 
-
-  Widget _buildButton(BuildContext context) {
+  Widget _buildForm(BuildContext context) {
     return Form(
         key: _formKey,
         child: Column(
@@ -113,10 +116,22 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(
+                  obscureText: !_passwordVisible,
+                  decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 12),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                   ),
                   validator: (text) {
                     if (text!.isEmpty){
@@ -157,35 +172,27 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           SizedBox(height: 10),
-          SizedBox(
-            height: 30,
-            child: Text(
-              'or',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          SizedBox(
-            child:  TextButton(
-              child: const Text('Enter as Guest'),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.black,
-                textStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 1.3
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("Not a member?"),
+              SizedBox(
+                child:  TextButton(
+                  child: const Text('Register here'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.blue,
+                    textStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => RegisterPage()),
+                    );
+                  },
                 ),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => HomePage(name: 'Guest', email: '', password: '')),
-                );
-              },
-            ),
+              )
+            ],
           )
        ],
       )
