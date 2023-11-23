@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipedia/view/home_page_view.dart';
-import 'package:recipedia/controls/db_helper.dart';
+import 'package:recipedia/view/forgotpw.dart';
 import 'package:recipedia/view/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,95 +10,43 @@ class LoginPage extends StatefulWidget {
 
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  List<Map<String, dynamic>> _account = [];
-  bool _isLoading = true;
-  bool accountFound = false;
   bool _passwordVisible = false;
 
-  Future<void> _refreshAccountData() async {
-    final data = await SQLHelper.getItems();
-    setState(() {
-      _account = data;
-      _isLoading = false;
-    });
-  }
-
-  @override
-  void initState(){
-    super.initState();
-    _refreshAccountData();
-  }
-
-  void _validate() async {
+  Future _validate() async {
     final form = _formKey.currentState;
     if (!form!.validate()) {
       return;
     }
-
-    await _refreshAccountData();
-
-    print("..number of items ${_account.length}");
-
-    _account.forEach((e) {
-      if (e['email'] == _emailController.text && e['password'] == _passwordController.text){
-        accountFound = true;
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => HomePage(name: e['username'], email: e['email'], password: e['password'])),
-        );
-      }
-
-      //UNTUK TESTING DELETE AKUN
-
-      // SQLHelper.deleteDog(e['id']);
-      // print("deleted" + e['username']);
-
-    });
-    if (!accountFound) showAlertDialog(context);
-  }
-
-  showAlertDialog(BuildContext context) {
-    Widget tryAgainButton = TextButton(
-      child: Text("TRY AGAIN"),
-      onPressed: () {
-        Navigator.of(context).pop();
-        return;
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text("Couldn't find your account!"),
-      content: Text("Email or password might wrong, try again!"),
-      actions: [
-        tryAgainButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim()
     );
   }
-
-
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          _buildImage(),
-          _buildButton(context)
-        ],
-      ),
+      body: SingleChildScrollView(
+       child: Column(
+         children: [
+           _buildImage(),
+           _buildForm(context)
+         ],
+       ),
+      )
     );
   }
 
@@ -113,8 +61,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 
-
-  Widget _buildButton(BuildContext context) {
+  Widget _buildForm(BuildContext context) {
     return Form(
         key: _formKey,
         child: Column(
@@ -149,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Enter your email',
-                    labelStyle: TextStyle(fontSize: 12),
+                    labelStyle: TextStyle(fontSize: 14),
+                    hintText: 'example@gmail.com', hintStyle: TextStyle(color: Colors.grey),
                   ),
                 )
               ],
@@ -157,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Container(
             width: 300,
-            height: 120,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -173,8 +120,13 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: !_passwordVisible,
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
-                      labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12),
+                    labelText: 'Enter your password',
+                    labelStyle: TextStyle(fontSize: 14),
+                    hintText: 'Password must be 6 letter length or more',
+                    hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _passwordVisible ? Icons.visibility : Icons.visibility_off,
@@ -197,7 +149,28 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                  TextButton(
+                    child: const Text('Forgot Password?'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.blue,
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+                      );
+                    },
+                  ),
+              ],
+            ),
+          ),
           SizedBox(
             width: 170,
             height: 60,
@@ -226,24 +199,27 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           SizedBox(height: 10),
-          SizedBox(
-            child:  TextButton(
-              child: const Text('Doesn\'t have any account yet? register here'),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.black,
-                textStyle: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 1.3
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("Not a member?"),
+              SizedBox(
+                child:  TextButton(
+                  child: const Text('Register here'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.blue,
+                    textStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => RegisterPage()),
+                    );
+                  },
                 ),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => RegisterPage()),
-                );
-              },
-            ),
+              )
+            ],
           )
        ],
       )

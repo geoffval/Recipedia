@@ -4,19 +4,13 @@ import 'package:recipedia/view/account.dart';
 import 'recipes_menu_view.dart';
 
 class HomePage extends StatefulWidget {
-
-  final String name;
-  final String email;
-  final String password;
-
-  const HomePage({super.key, required this.name, required this.email, required this.password});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             onPressed: (){
                               Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => AccountScreen(name: widget.name, password: widget.password,email: widget.email)),
+                                MaterialPageRoute(builder: (context) => AccountScreen()),
                               );
                             },
                             child: Row(

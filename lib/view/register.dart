@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipedia/controls/db_helper.dart';
+import 'package:recipedia/controls/auth.dart';
 import 'package:recipedia/view/login.dart';
 
 
@@ -17,49 +19,66 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
 
-
-  void initState(){
-    super.initState();
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
-  Future<void> _validate() async {
+
+  // Register user
+  Future _validate() async {
     final form = _formKey.currentState;
     if (!form!.validate()) {
       return;
     }
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // Navigate to the home page after successful registration
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Auth()),
+      );
+    } catch (e) {
+      print("Error registering user: $e");
+      // Handle registration error if necessary
+    }
+    addUserDetail();
+  }
 
-    SQLHelper.createItem(
-        _usernameController.text,
-        _emailController.text,
-        _passwordController.text
-    );
-
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => LoginPage()),
-    );
+  // Add user detail
+  Future addUserDetail() async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'username' : _usernameController.text.trim(),
+      'email' : _emailController.text.trim(),
+      'password' : _passwordController.text.trim()
+    });
   }
 
 
 
-
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          _buildImage(),
-          _buildButton(context)
-        ],
-      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildImage(),
+            _buildButton(context)
+          ],
+        ),
+      )
     );
   }
 
   Widget _buildImage() {
     return Container(
-        padding: EdgeInsets.only(top:20),
         child: Align(
           alignment: FractionalOffset.center,
           child: Image.asset('assets/logo_recipedia.png', scale: 2.3),
@@ -97,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your username',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 14)
                   ),
                 )
               ],
@@ -131,7 +150,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your email',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 14),
+                    hintText: 'example@gmail.com', hintStyle: TextStyle(color: Colors.grey),
                   ),
                 )
               ],
@@ -162,7 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12),
+                      labelStyle: TextStyle(fontSize: 14),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _passwordVisible ? Icons.visibility : Icons.visibility_off,
@@ -179,7 +199,6 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             ),
           ),
-          SizedBox(height: 20),
           SizedBox(
             width: 170,
             height: 60,
@@ -205,6 +224,29 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("Already a member?"),
+              SizedBox(
+                child:  TextButton(
+                  child: const Text('Login here'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.blue,
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => LoginPage()),
+                    );
+                  },
+                ),
+              )
+            ],
+          )
         ],
       )
     );
