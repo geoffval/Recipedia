@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/main.dart';
@@ -20,6 +21,43 @@ class _AccountScreenState extends State<AccountScreen> {
   bool loggedIn = false;
   late String name;
 
+  // final CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
+
+
+  // List<String> data = [];
+  //
+  // Future<void> getUserData(String userId) async {
+  //   try {
+  //     DocumentSnapshot userSnapshot = await usersCollection.doc(userId).get();
+  //
+  //     if (userSnapshot.exists) {
+  //       // User data exists
+  //       Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+  //       print('User Data: $userData');
+  //     } else {
+  //       // User not found
+  //       print('User not found in the database');
+  //     }
+  //   } catch (e) {
+  //     print('Error getting user data: $e');
+  //   }
+  // }
+
+
+  // Mendapatkan data user
+  // Future<void> Data() async {
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .where("userid", isEqualTo: user?.uid)
+  //       .get()
+  //       .then((ds) {
+  //     print(ds);
+  //   });
+  // }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,14 +72,30 @@ class _AccountScreenState extends State<AccountScreen> {
         )
       ]
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            _buildLoginForm()
-          ],
-        ),
-      ),
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.email)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final userData = snapshot.data!.data() as Map<String, dynamic>;
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  _buildLoginForm(userData)
+                ],
+              ),
+            );
+          } else if(snapshot.hasError) {
+            return Center(
+              child: Text('Error ${snapshot.error}'),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      )
     );
   }
 
@@ -90,7 +144,7 @@ class _AccountScreenState extends State<AccountScreen> {
       );
     }
 
-  Widget _buildLoginForm() {
+  Widget _buildLoginForm(userData) {
     return Form(
       key: _formKey,
       child: Padding(
@@ -105,17 +159,17 @@ class _AccountScreenState extends State<AccountScreen> {
                 ]
             ),
             TextFormField(
-              initialValue: "Username (not working yet)",
+              initialValue: userData['username'],
               decoration: InputDecoration(labelText: 'Username'),
             ),
             TextFormField(
 
-              initialValue: user.email!,
+              initialValue: userData['email'],
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(labelText: 'Email'),
             ),
             TextFormField(
-              initialValue: "Password (not working yet)",
+              initialValue: userData['password'],
               decoration: InputDecoration(labelText: 'Password'),
             ),
             SizedBox(height: 20),

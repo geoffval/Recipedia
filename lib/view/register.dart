@@ -34,30 +34,39 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.email)
+          .set({
+        'username' : _usernameController.text.trim(),
+        'email' : _emailController.text.trim(),
+        'password' : _passwordController.text.trim(),
+      });
+
       // Navigate to the home page after successful registration
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Auth()),
       );
-    } catch (e) {
-      print("Error registering user: $e");
-      // Handle registration error if necessary
+    } on FirebaseException catch (e) {
+      showDialog(context: context, builder: (context){
+        return AlertDialog(
+          content: Text(e.message.toString()),
+        );
+      });
     }
-    addUserDetail();
+
+
+
   }
 
-  // Add user detail
-  Future addUserDetail() async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'username' : _usernameController.text.trim(),
-      'email' : _emailController.text.trim(),
-      'password' : _passwordController.text.trim()
-    });
-  }
+
+
 
 
 
