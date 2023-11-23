@@ -20,13 +20,6 @@ class _AccountScreenState extends State<AccountScreen> {
   bool loggedIn = false;
   late String name;
 
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

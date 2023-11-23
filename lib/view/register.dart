@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/controls/auth.dart';
@@ -25,6 +26,8 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+
+  // Register user
   Future _validate() async {
     final form = _formKey.currentState;
     if (!form!.validate()) {
@@ -44,6 +47,16 @@ class _RegisterPageState extends State<RegisterPage> {
       print("Error registering user: $e");
       // Handle registration error if necessary
     }
+    addUserDetail();
+  }
+
+  // Add user detail
+  Future addUserDetail() async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'username' : _usernameController.text.trim(),
+      'email' : _emailController.text.trim(),
+      'password' : _passwordController.text.trim()
+    });
   }
 
 
@@ -103,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your username',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 14)
                   ),
                 )
               ],
@@ -137,7 +150,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your email',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 14),
+                    hintText: 'example@gmail.com', hintStyle: TextStyle(color: Colors.grey),
                   ),
                 )
               ],
@@ -168,7 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12),
+                      labelStyle: TextStyle(fontSize: 14),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _passwordVisible ? Icons.visibility : Icons.visibility_off,
