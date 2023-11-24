@@ -16,6 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
 
@@ -46,6 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'username' : _usernameController.text.trim(),
         'email' : _emailController.text.trim(),
         'password' : _passwordController.text.trim(),
+        'age' : _ageController.text.trim(),
       });
 
       // Navigate to the home page after successful registration
@@ -60,14 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
         );
       });
     }
-
-
-
   }
-
-
-
-
 
 
   @override
@@ -125,6 +120,37 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your username',
+                      labelStyle: TextStyle(fontSize: 14)
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            width: 300,
+            height: 110,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Age',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextFormField(
+                  controller: _ageController,
+                  keyboardType: TextInputType.number,
+                  validator: (text) {
+                    if (text!.isEmpty){
+                      return 'Enter age!';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your age',
                       labelStyle: TextStyle(fontSize: 14)
                   ),
                 )

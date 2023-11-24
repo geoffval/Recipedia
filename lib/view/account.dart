@@ -2,61 +2,103 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/main.dart';
+import 'package:recipedia/view/forgotpw.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
-
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final _passwordController = TextEditingController();
   final user = FirebaseAuth.instance.currentUser!;
+  final usersCollection = FirebaseFirestore.instance.collection('users');
 
   bool loggedIn = false;
-  late String name;
 
-  // final CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
+  // Edit username Alert dialog
+  Future<void> editData(String field, userData) async {
+    String newValue = "";
+    String originalValue =  userData[field];
+      await showDialog(
+          context: context,
+          builder: (context) =>
+              AlertDialog(
+                title: Text(
+                  "Edit $field",
+                ),
+                content: TextField(
+                  keyboardType: field == 'age' ? TextInputType.number : null,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                      hintText: ("Enter new $field"),
+                      hintStyle: const TextStyle(color: Colors.grey)
+                  ),
+                  onChanged: (value) {
+                    newValue = value;
+                  },
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        newValue = originalValue;
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cancel")
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(newValue);
+                        },
+                      child: const Text("Save")
+                  ),
+                ],
+              )
+      );
+      if (newValue.trim().isNotEmpty) {
+        await usersCollection.doc(user.email).update({field: newValue});
+      } else {
+        // Restore the original value if the user chose to cancel
+        await usersCollection.doc(user.email).update({field: originalValue});
+      }
+  }
 
+  // Logout Alert dialog
+  showAlertDialog(BuildContext context) {
+    Widget noButton = TextButton(
+      child: const Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        return;
+      },
+    );
 
-  // List<String> data = [];
-  //
-  // Future<void> getUserData(String userId) async {
-  //   try {
-  //     DocumentSnapshot userSnapshot = await usersCollection.doc(userId).get();
-  //
-  //     if (userSnapshot.exists) {
-  //       // User data exists
-  //       Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
-  //       print('User Data: $userData');
-  //     } else {
-  //       // User not found
-  //       print('User not found in the database');
-  //     }
-  //   } catch (e) {
-  //     print('Error getting user data: $e');
-  //   }
-  // }
+    Widget yesButton = TextButton(
+      child: const Text("Yes"),
+      onPressed: () async {
+        Navigator.of(context).pop();
+        await FirebaseAuth.instance.signOut();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp()));
+      },
+    );
 
+    AlertDialog alert = AlertDialog(
+      title: const Text("You are about to logout"),
+      content: const Text("Are you sure?"),
+      actions: [
+        yesButton,
+        noButton,
+      ],
+    );
 
-  // Mendapatkan data user
-  // Future<void> Data() async {
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .where("userid", isEqualTo: user?.uid)
-  //       .get()
-  //       .then((ds) {
-  //     print(ds);
-  //   });
-  // }
-
-
-
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,19 +106,16 @@ class _AccountScreenState extends State<AccountScreen> {
       resizeToAvoidBottomInset : false,
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-          title: Text('ACCOUNT'),
+          title: const Text('ACCOUNT'),
           backgroundColor: Colors.grey[100],
-          actions: <Widget>[
+          actions: const <Widget>[
             Padding(padding: const EdgeInsets.all(10.0),
             child: Icon(Icons.account_box)
         )
       ]
       ),
       body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.email)
-            .snapshots(),
+        stream: usersCollection.doc(user.email).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final userData = snapshot.data!.data() as Map<String, dynamic>;
@@ -84,7 +123,7 @@ class _AccountScreenState extends State<AccountScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  _buildLoginForm(userData)
+                  _buildLoginForm(userData),
                 ],
               ),
             );
@@ -99,94 +138,95 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  Widget _buildSucess(){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(Icons.check, color: Colors.orangeAccent),
-        Text('HI $name')
-      ],
-    );
-  }
-
-  showAlertDialog(BuildContext context) {
-      Widget noButton = TextButton(
-        child: Text("No"),
-        onPressed: () {
-          Navigator.of(context).pop();
-          return;
-        },
-      );
-
-      Widget yesButton = TextButton(
-        child: Text("Yes"),
-        onPressed: () async {
-          Navigator.of(context).pop();
-          await FirebaseAuth.instance.signOut();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
-        },
-      );
-
-      AlertDialog alert = AlertDialog(
-        title: Text("You are about to logout"),
-        content: Text("Are you sure?"),
-        actions: [
-          yesButton,
-          noButton,
-        ],
-      );
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
 
   Widget _buildLoginForm(userData) {
     return Form(
-      key: _formKey,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children:[
-                  Icon(Icons.account_box, size:200),
+                  const Icon(Icons.person, size:90),
+                  Text(userData['email'])
                 ]
             ),
-            TextFormField(
-              initialValue: userData['username'],
-              decoration: InputDecoration(labelText: 'Username'),
-            ),
-            TextFormField(
-
-              initialValue: userData['email'],
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextFormField(
-              initialValue: userData['password'],
-              decoration: InputDecoration(labelText: 'Password'),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-
-              children: [
-                ElevatedButton(
-                    onPressed: (){},
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                      )),
-                    ),
-                    child: Text('Edit')
+            const SizedBox(height: 25),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                SizedBox(width: 30),
+                padding: const EdgeInsets.only(top: 5,left: 25,right: 15, bottom: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Username"),
+                        IconButton(
+                            onPressed: () => editData('username',userData),
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.grey
+                            )
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(userData['username'],textAlign: TextAlign.left,)
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                padding: const EdgeInsets.only(top: 5,left: 25,right: 15, bottom: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Age"),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () => editData('age',userData),
+                              icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.grey
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(userData['age']),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // SizedBox(height: 150),
                 ElevatedButton(
                     onPressed: () {
                       showAlertDialog(context);
@@ -196,7 +236,22 @@ class _AccountScreenState extends State<AccountScreen> {
                           borderRadius: BorderRadius.circular(10.0)
                       )),
                     ),
-                    child: Text('Logout')
+                    child: const Text('Logout')
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
+                      );
+                      },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)
+                      )),
+                      backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+                    ),
+                    child: const Text('Change Password',style: TextStyle(color: Colors.black))
                 ),
               ],
             )
