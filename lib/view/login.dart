@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildImage() {
     return Container(
-        padding: EdgeInsets.only(top:20),
+        padding: EdgeInsets.only(top:10),
         child: Align(
           alignment: FractionalOffset.center,
           child: Image.asset('assets/logo_recipedia.png', scale: 2),
