@@ -17,17 +17,24 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
   final List<TextEditingController> _ingredientsControllers = <TextEditingController>[];
   String? _dropdownValue;
 
+  // Type drop down model
+  DropListModel dropListModel = DropListModel([
+    OptionItem(id: "1", title: "Food"),
+    OptionItem(id: "2", title: "Drink"),
+    OptionItem(id: "3", title: "Dessert"),
+    OptionItem(id: "4", title: "Pastries"),
+  ]);
+  OptionItem optionItemSelected = OptionItem(id: null, title: "Type");
+
 
   // GET TYPE , INGREDIENTS , STEPS VALUES
   // -----------------------------------------------------------------------------------
   String? getDropdownValue() {
     return optionItemSelected.id;
   }
-
   List<String> getIngredientsValues() {
     return _ingredientsControllers.map((controller) => controller.text).toList();
   }
-
   List<String> getStepsValues() {
     return _stepsControllers.map((controller) => controller.text).toList();
   }
@@ -35,22 +42,8 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
 
 
 
-  DropListModel dropListModel = DropListModel([
-    OptionItem(id: "1", title: "Food"),
-    OptionItem(id: "2", title: "Drink"),
-    OptionItem(id: "3", title: "Dessert"),
-    OptionItem(id: "4", title: "Pastries"),
-  ]);
-
-  OptionItem optionItemSelected = OptionItem(id: null, title: "Type");
-
-
-  Future<void> _createRecipes(
-      String recipeName,
-      String recipeDesc,
-      String dropdownValue,
-      List<String> ingredientsValues,
-      List<String> stepsValues) async {
+  // CREATE RECIPES FUNCTION
+  Future<void> _createRecipes(String recipeName, String recipeDesc, String dropdownValue, List<String> ingredientsValues, List<String> stepsValues) async {
     try {
       // Show loading indicator
       showDialog(
@@ -59,10 +52,8 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
           return const Center(child: CircularProgressIndicator());
         },
       );
-
-      // Simulate a delay (replace this with your actual recipe creation logic)
+      // Simulate a delay and create a new recipe
       await Future.delayed(const Duration(seconds: 2));
-      // Assuming Recipes.createRecipes is a method that adds the recipe to the database
       await Recipes.createRecipes(recipeName, recipeDesc, dropdownValue, ingredientsValues, stepsValues);
       // Close the loading indicator
       Navigator.of(context).pop();
@@ -98,6 +89,8 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
     }
   }
 
+
+  // BUILD
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,6 +114,9 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
     );
   }
 
+
+  // ADD RECIPES FORM
+  //---------------------------------------------
   Widget _buildAddRecipesForm() {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -275,7 +271,11 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
       ),
     );
   }
+  //---------------------------------------------
 
+
+  // ADD INGREDIENTS FORM
+  //---------------------------------------------
   Widget _buildIngredientsList() {
     return Container(
       padding: const EdgeInsets.all(25),
@@ -339,7 +339,11 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
       ),
     );
   }
+  //---------------------------------------------
 
+
+  // ADD STEPS FORM
+  // --------------------------------------------
   Widget _buildStepsList() {
     return Container(
       padding: const EdgeInsets.all(25),
@@ -403,6 +407,8 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
       ),
     );
   }
+
+  //---------------------------------------------
 }
 
 
