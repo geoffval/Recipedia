@@ -97,11 +97,9 @@ class _FoodScreenState extends State<FoodScreen> {
         color: Colors.grey[300],
         borderRadius: const BorderRadius.all(Radius.circular(20))
       ),
-      child: Expanded(
           child: ListTile(
-                  title: GetRecipes(documentId: docIDs[index]),
-                )
-        )
+            title: GetRecipes(documentId: docIDs[index]),
+          )
       );
   }
 }
