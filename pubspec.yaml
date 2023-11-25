@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^2.23.0
   cloud_firestore: ^4.13.2
   uuid: ^4.2.1
+  dropdown_model_list: ^1.1.6
 
 
 dev_dependencies:
