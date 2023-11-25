@@ -12,25 +12,16 @@ class FoodScreen extends StatefulWidget {
 
 class _FoodScreenState extends State<FoodScreen> {
   final scrollController = ScrollController();
-  int _docLength = 0;
   //document IDs
   List<String> docIDs = [];
 
   Future getDocId() async{
     await FirebaseFirestore.instance.collection('recipes').get().then(
         (snapshot) => snapshot.docs.forEach((document) {
-          print(document.reference);
+          //print(document.reference);
           docIDs.add(document.reference.id);
         }),
     );
-    _docLength = docIDs.length;
-    print('Doc length $_docLength');
-  }
-
-  @override
-  void initState(){
-    getDocId();
-    super.initState();
   }
 
   @override
@@ -54,15 +45,32 @@ class _FoodScreenState extends State<FoodScreen> {
         )
     );
   }
-
+  /*
   Widget _buildScroll() {
     return Scrollbar(
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         controller: scrollController,
-        itemCount: _docLength,
+        itemCount: docIDs.length,
         itemBuilder: (context, index) => buildList(index)
+      ),
+    );
+  }
+  */
+  Widget _buildScroll() {
+    return Scrollbar(
+      child: FutureBuilder(
+          future: getDocId(),
+          builder: (context, index){
+            return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                controller: scrollController,
+                itemCount: docIDs.length,
+                itemBuilder: (context, index) => buildList(index)
+            );
+          },
       ),
     );
   }
@@ -90,36 +98,10 @@ class _FoodScreenState extends State<FoodScreen> {
         borderRadius: const BorderRadius.all(Radius.circular(20))
       ),
       child: Expanded(
-          child: FutureBuilder(
-              future: getDocId(),
-              builder: (context, snapshot){
-                return ListTile(
+          child: ListTile(
                   title: GetRecipes(documentId: docIDs[index]),
-                );
-              }),
+                )
         )
       );
-
-    /*
-    return FutureBuilder(
-        future: getDocId(),
-        builder: (context, snapshot){
-          return Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(20))
-              ),
-              child: Expanded(
-                child: ListView.builder(itemBuilder: (context, snapshot){
-                  return ListTile(
-                    title: GetRecipes(documentId: docIDs[index],),
-                  );
-              }),
-            ),
-          );
-        });
-     */
   }
 }
