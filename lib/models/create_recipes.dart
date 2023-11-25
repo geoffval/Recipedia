@@ -4,15 +4,25 @@ import 'package:uuid/uuid.dart';
 
 class Recipes {
 
-  static Future<void> loadData(String name, String desc, String type) async {
+  static Future<void> createRecipes(String name, String desc, String type, List ingredients, List steps) async {
     final user = FirebaseAuth.instance.currentUser!.email;
     CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
     var uuid = const Uuid();
 
+    if (type == '1') {
+      type = 'food';
+    }else if(type == '2'){
+      type = 'drink';
+    }else if(type == '3'){
+      type = 'dessert';
+    }else{type = 'pastries';}
+
     usersCollection.doc(user).collection('recipes').doc(uuid.v1()).set({
       'name' : name,
       'desc' : desc,
-      'type' : type
+      'type' : type,
+      'ingredients' : ingredients,
+      'steps' : steps
     });
 
 

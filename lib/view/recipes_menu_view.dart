@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipedia/models/create_recipes.dart';
+import 'package:recipedia/view/add_recipes_view.dart';
 import 'package:recipedia/view/dessert.dart';
 import 'package:recipedia/view/drink.dart';
 import 'package:recipedia/view/food.dart';
@@ -14,9 +14,6 @@ class RecipesPage extends StatefulWidget {
 
 bool _addOrEditRecipes = true;
 bool get addOrEditRecipes => _addOrEditRecipes;
-
-
-
 
 
 
@@ -275,7 +272,7 @@ class _RecipesPageState extends State<RecipesPage> {
                           onPressed: (){
                             _addOrEditRecipes = true;
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => RecipesCategoriesPage()),
+                              MaterialPageRoute(builder: (context) => AddRecipesScreen()),
                             );
                           },
                           child: Row(
