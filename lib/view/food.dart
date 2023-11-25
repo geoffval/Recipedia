@@ -9,13 +9,14 @@ class FoodScreen extends StatefulWidget {
   State createState() => _FoodScreenState();
 }
 
-
 class _FoodScreenState extends State<FoodScreen> {
   final scrollController = ScrollController();
   //document IDs
   List<String> docIDs = [];
 
   Future getDocId() async{
+    //clears the list to prevent duplicates everytime getDocId gets called
+    docIDs.clear();
     await FirebaseFirestore.instance.collection('recipes').get().then(
         (snapshot) => snapshot.docs.forEach((document) {
           //print(document.reference);
@@ -45,24 +46,12 @@ class _FoodScreenState extends State<FoodScreen> {
         )
     );
   }
-  /*
-  Widget _buildScroll() {
-    return Scrollbar(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        controller: scrollController,
-        itemCount: docIDs.length,
-        itemBuilder: (context, index) => buildList(index)
-      ),
-    );
-  }
-  */
+
   Widget _buildScroll() {
     return Scrollbar(
       child: FutureBuilder(
           future: getDocId(),
-          builder: (context, index){
+          builder: (context, snapshot){
             return ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
