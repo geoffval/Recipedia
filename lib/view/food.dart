@@ -24,7 +24,6 @@ class _FoodScreenState extends State<FoodScreen> {
     await usersCollection.doc(user.email).collection('recipes').get()
     .then(
         (snapshot) => snapshot.docs.forEach((document) {
-          print(document.reference.id);
           docIDs.add(document.reference.id);
         }),
     );
@@ -92,7 +91,7 @@ class _FoodScreenState extends State<FoodScreen> {
         borderRadius: const BorderRadius.all(Radius.circular(20))
       ),
           child: ListTile(
-            title: GetRecipes(documentId: docIDs[index]),
+            title: GetRecipes(documentId: docIDs[index], type: "food")
           )
       );
   }
