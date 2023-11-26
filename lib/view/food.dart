@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/controls/get_recipes.dart';
 
@@ -11,15 +12,19 @@ class FoodScreen extends StatefulWidget {
 
 class _FoodScreenState extends State<FoodScreen> {
   final scrollController = ScrollController();
+  final user = FirebaseAuth.instance.currentUser!;
+  final usersCollection = FirebaseFirestore.instance.collection('users');
+
   //document IDs
   List<String> docIDs = [];
 
   Future getDocId() async{
     //clears the list to prevent duplicates everytime getDocId gets called
     docIDs.clear();
-    await FirebaseFirestore.instance.collection('recipes').get().then(
+    await usersCollection.doc(user.email).collection('recipes').get()
+    .then(
         (snapshot) => snapshot.docs.forEach((document) {
-          //print(document.reference);
+          print(document.reference.id);
           docIDs.add(document.reference.id);
         }),
     );
