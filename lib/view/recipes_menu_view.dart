@@ -4,7 +4,6 @@ import 'package:recipedia/view/dessert.dart';
 import 'package:recipedia/view/drink.dart';
 import 'package:recipedia/view/food.dart';
 import 'package:recipedia/view/pastries.dart';
-import 'package:recipedia/view/recipes_categories_view.dart';
 
 
 class RecipesPage extends StatefulWidget {
@@ -24,8 +23,8 @@ class _RecipesPageState extends State<RecipesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('MENU'),
-        actions: <Widget>[
-          Padding(padding: const EdgeInsets.all(10.0),
+        actions: const <Widget>[
+          Padding(padding: EdgeInsets.all(10.0),
               child: Icon(Icons.info)
           )
         ],
@@ -70,7 +69,7 @@ class _RecipesPageState extends State<RecipesPage> {
                               MaterialPageRoute(builder: (context) => FoodScreen()),
                             );
                           },
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -81,7 +80,7 @@ class _RecipesPageState extends State<RecipesPage> {
                           )
                       )
                   ),
-                  Text(
+                  const Text(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -108,7 +107,7 @@ class _RecipesPageState extends State<RecipesPage> {
                               MaterialPageRoute(builder: (context) => DrinkScreen()),
                             );
                           },
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -120,7 +119,7 @@ class _RecipesPageState extends State<RecipesPage> {
                           )
                       )
                   ),
-                  Text(
+                  const Text(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -152,7 +151,7 @@ class _RecipesPageState extends State<RecipesPage> {
                               MaterialPageRoute(builder: (context) => DessertScreen()),
                             );
                           },
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -164,7 +163,7 @@ class _RecipesPageState extends State<RecipesPage> {
                           )
                       )
                   ),
-                  Text(
+                  const Text(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -191,7 +190,7 @@ class _RecipesPageState extends State<RecipesPage> {
                               MaterialPageRoute(builder: (context) => PastriesScreen()),
                             );
                           },
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -203,7 +202,7 @@ class _RecipesPageState extends State<RecipesPage> {
                           )
                       )
                   ),
-                  Text(
+                  const Text(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -230,52 +229,13 @@ class _RecipesPageState extends State<RecipesPage> {
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
                           ),
-                        onPressed: (){
-                            _addOrEditRecipes = false;
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => RecipesCategoriesPage()),
-                          );
-                        },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.my_library_books,
-                                size: 62,)
-                            ],
-                          )
-                      )
-                  ),
-                  Text(
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                      "Edit Recipes"
-                  )
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                      height: 110,
-                      width: 110,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.black87),
-                          ),
                           onPressed: (){
                             _addOrEditRecipes = true;
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => AddRecipesScreen()),
                             );
                           },
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -286,7 +246,7 @@ class _RecipesPageState extends State<RecipesPage> {
                           )
                       )
                   ),
-                  Text(
+                  const Text(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
