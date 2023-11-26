@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipedia/controls/get_recipes.dart';
 
 class FoodScreen extends StatefulWidget {
   const FoodScreen({super.key});
@@ -7,10 +10,24 @@ class FoodScreen extends StatefulWidget {
   State createState() => _FoodScreenState();
 }
 
-
 class _FoodScreenState extends State<FoodScreen> {
   final scrollController = ScrollController();
+  final user = FirebaseAuth.instance.currentUser!;
+  final usersCollection = FirebaseFirestore.instance.collection('users');
 
+  //document IDs
+  List<String> docIDs = [];
+
+  Future getDocId() async{
+    //clears the list to prevent duplicates everytime getDocId gets called
+    docIDs.clear();
+    await usersCollection.doc(user.email).collection('recipes').get()
+    .then(
+        (snapshot) => snapshot.docs.forEach((document) {
+          docIDs.add(document.reference.id);
+        }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +53,17 @@ class _FoodScreenState extends State<FoodScreen> {
 
   Widget _buildScroll() {
     return Scrollbar(
-      child: ListView.builder(
-        controller: scrollController,
-        itemCount: 1,
-        itemBuilder: (context, index) => buildList(index)
+      child: FutureBuilder(
+          future: getDocId(),
+          builder: (context, snapshot){
+            return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                controller: scrollController,
+                itemCount: docIDs.length,
+                itemBuilder: (context, index) => buildList(index)
+            );
+          },
       ),
     );
   }
@@ -66,6 +90,9 @@ class _FoodScreenState extends State<FoodScreen> {
         color: Colors.grey[300],
         borderRadius: const BorderRadius.all(Radius.circular(20))
       ),
-    );
+          child: ListTile(
+            title: GetRecipes(documentId: docIDs[index], type: "food")
+          )
+      );
   }
 }

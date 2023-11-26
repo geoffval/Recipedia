@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipedia/controls/get_recipes.dart';
 
 class PastriesScreen extends StatefulWidget {
   const PastriesScreen({super.key});
@@ -7,276 +10,89 @@ class PastriesScreen extends StatefulWidget {
   State createState() => _PastriesScreenState();
 }
 
-
 class _PastriesScreenState extends State<PastriesScreen> {
   final scrollController = ScrollController();
+  final user = FirebaseAuth.instance.currentUser!;
+  final usersCollection = FirebaseFirestore.instance.collection('users');
 
+  //document IDs
+  List<String> docIDs = [];
+
+  Future getDocId() async{
+    //clears the list to prevent duplicates everytime getDocId gets called
+    docIDs.clear();
+    await usersCollection.doc(user.email).collection('recipes').get()
+        .then(
+          (snapshot) => snapshot.docs.forEach((document) {
+        docIDs.add(document.reference.id);
+      }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('PASTRIES'),
-            actions: <Widget>[
+            title: Text('FOOD'),
+            actions: const <Widget>[
               Padding(padding: const EdgeInsets.all(10.0),
                   child: Icon(Icons.food_bank)
               ),
             ]
         ),
-        body: buildScroll()
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildSearch(),
+              _buildScroll(),
+            ],
+          ),
+        )
     );
   }
 
-  Widget buildScroll() {
+  Widget _buildScroll() {
     return Scrollbar(
-      child: ListView.builder(
-          controller: scrollController,
-          itemCount: 1,
-          itemBuilder: (context, index) => buildList(index)
+      child: FutureBuilder(
+        future: getDocId(),
+        builder: (context, snapshot){
+          return ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              controller: scrollController,
+              itemCount: docIDs.length,
+              itemBuilder: (context, index) => buildList(index)
+          );
+        },
       ),
     );
   }
 
-  Column buildList(int index) {
-    return Column(
+  Widget _buildSearch() {
+    return Container(
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
+      padding: const EdgeInsets.all(15),
+      child: Row(
         children: [
-          Container(
-            height: 150,
-            margin: EdgeInsets.only(left: 10,right: 10),
-            decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(200, 200, 200, 0.8)
-            ),
-            child: Row(
-              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(227, 233, 227, 1)
-                    ),
-                    width: 130,
-                    height: 110,
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
-                    child: Image.asset('assets/images/pastries1.jpg')
-                ),
-                Expanded(
-                    child: Container(
-                      height: 135,
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      margin: EdgeInsets.only(right: 20),
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Croissant'),
-                          SizedBox(height: 10),
-                          Text('Hidangan Croissant yang renyah diluar dan lembut didalam')
-                        ],
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          Container(
-            height: 150,
-            margin: EdgeInsets.only(left: 10,right: 10),
-            decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(200, 200, 200, 0.8)
-            ),
-            child: Row(
-              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(227, 233, 227, 1)
-                    ),
-                    width: 130,
-                    height: 110,
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
-                    child: Image.asset('assets/images/pastries2.jpg')
-                ),
-                Expanded(
-                    child: Container(
-                      height: 135,
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      margin: EdgeInsets.only(right: 20),
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Chicken and Mushroom Pie'),
-                          SizedBox(height: 10),
-                          Text('Hidangan Pie yang sangat lezat perpaduan antara ayam dan jamur')
-                        ],
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          Container(
-            height: 150,
-            margin: EdgeInsets.only(left: 10,right: 10),
-            decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(200, 200, 200, 0.8)
-            ),
-            child: Row(
-              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(227, 233, 227, 1)
-                    ),
-                    width: 130,
-                    height: 110,
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
-                    child: Image.asset('assets/images/pastries3.jpg')
-                ),
-                Expanded(
-                    child: Container(
-                      height: 135,
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      margin: EdgeInsets.only(right: 20),
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Cookies'),
-                          SizedBox(height: 10),
-                          Text('Hidangan cookies yang renyah dengan choco chip yang lezat')
-                        ],
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          Container(
-            height: 150,
-            margin: EdgeInsets.only(left: 10,right: 10),
-            decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(200, 200, 200, 0.8)
-            ),
-            child: Row(
-              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(227, 233, 227, 1)
-                    ),
-                    width: 130,
-                    height: 110,
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
-                    child: Image.asset('assets/images/pastries4.jpg')
-                ),
-                Expanded(
-                    child: Container(
-                      height: 135,
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      margin: EdgeInsets.only(right: 20),
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Apricot Danish '),
-                          SizedBox(height: 10),
-                          Text('Pastry berlapis dengan rasa manis dan disajikan dalam tradisi viennoiserie')
-                        ],
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          Container(
-            height: 150,
-            margin: EdgeInsets.only(left: 10,right: 10),
-            decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(200, 200, 200, 0.8)
-            ),
-            child: Row(
-              mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(227, 233, 227, 1)
-                    ),
-                    width: 130,
-                    height: 110,
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
-                    child: Image.asset('assets/images/pastries5.jpg')
-                ),
-                Expanded(
-                    child: Container(
-                      height: 135,
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      margin: EdgeInsets.only(right: 20),
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Lemon Meringue Tarts'),
-                            SizedBox(height: 10),
-                            Text('Tart Lezat yang Membuat Lidah Bergoyang')
-                          ]
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ),
+          Icon(Icons.search, color: Colors.white,)
+        ],
+      ),
+    );
+  }
 
-
-        ]
+  Widget buildList(int index) {
+    return Container(
+        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
+        decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: const BorderRadius.all(Radius.circular(20))
+        ),
+        child: ListTile(
+            title: GetRecipes(documentId: docIDs[index], type: "food")
+        )
     );
   }
 }
