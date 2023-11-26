@@ -91,7 +91,8 @@ class _PastriesScreenState extends State<PastriesScreen> {
             borderRadius: const BorderRadius.all(Radius.circular(20))
         ),
         child: ListTile(
-            title: GetRecipes(documentId: docIDs[index], type: "food")
+            title: GetRecipes(documentId: docIDs[index], type: "pastries", list: false, title: true,),
+            subtitle: GetRecipes(documentId: docIDs[index], type: "pastries", list: true, title: false,)
         )
     );
   }

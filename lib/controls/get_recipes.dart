@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 class GetRecipes extends StatelessWidget {
 final String documentId;
 final String type;
+final bool list;
+final bool title;
 
-GetRecipes({required this.documentId,required this.type});
+GetRecipes({required this.documentId,required this.type, required this.title,required this.list});
 
 
 @override
@@ -21,7 +23,7 @@ Widget build(BuildContext context) {
         Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
 
 
-        if (data != null && data['type'] == type) {
+        if (data != null && data['type'] == type && list == false && title == false) { //Full list with ingredients and steps
           return Container(
             child: Column(
               children: [
@@ -29,6 +31,24 @@ Widget build(BuildContext context) {
                 Text('Description: ${data['desc']}'),
                 Text('Ingredients: ${data['ingredients']}'),
                 Text('Steps: ${data['steps']}'),
+              ],
+            ),
+          );
+        } else if (data != null && data['type'] == type && list == true){ //Title only
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text('${data['desc']}'),
+              ],
+            ),
+          );
+        } else if (data != null && data['type'] == type && list == false && title == true){ //Description only
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text('${data['name']}'),
               ],
             ),
           );

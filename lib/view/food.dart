@@ -91,7 +91,8 @@ class _FoodScreenState extends State<FoodScreen> {
         borderRadius: const BorderRadius.all(Radius.circular(20))
       ),
           child: ListTile(
-            title: GetRecipes(documentId: docIDs[index], type: "food")
+            title: GetRecipes(documentId: docIDs[index], type: "food", list: false, title: true,),
+            subtitle: GetRecipes(documentId: docIDs[index], type: "food", list: true, title: false,),
           )
       );
   }
