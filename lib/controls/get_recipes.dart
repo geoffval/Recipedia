@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 class GetRecipes extends StatelessWidget {
 final String documentId;
+final String type;
 
-GetRecipes({required this.documentId});
+GetRecipes({required this.documentId,required this.type});
+
 
 @override
 Widget build(BuildContext context) {
@@ -18,7 +20,8 @@ Widget build(BuildContext context) {
       if (snapshot.connectionState == ConnectionState.done) {
         Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
 
-        if (data != null && data['type'] == 'food') {
+
+        if (data != null && data['type'] == type) {
           return Container(
             child: Column(
               children: [
