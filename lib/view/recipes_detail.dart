@@ -6,36 +6,32 @@ import 'package:recipedia/controls/get_recipes.dart';
 
 class RecipeDetails extends StatefulWidget {
   final String docID;
+  final String title;
 
-  const RecipeDetails({super.key, required this.docID});
+  const RecipeDetails({super.key, required this.docID, required this.title});
 
 
   @override
   State<RecipeDetails> createState() => _RecipeDetailsState();
 }
 
- //final _recipeDetails = RecipeDetails();
 
 class _RecipeDetailsState extends State<RecipeDetails> {
   final scrollController = ScrollController();
   final user = FirebaseAuth.instance.currentUser!;
   final usersCollection = FirebaseFirestore.instance.collection('users');
 
-  //String get _docID => _recipeDetails.docID;
 
-  //Future getDocId() async{
-  //  await usersCollection.doc(user.email).collection('recipes').get();
-  //}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
         appBar: AppBar(
-            title: Text('FOOD'),
+            title: Text(widget.title.toUpperCase()),
             backgroundColor: Colors.grey[100],
             actions: const <Widget>[
-              Padding(padding: const EdgeInsets.all(10.0),
+              Padding(padding: EdgeInsets.all(10.0),
                   child: Icon(Icons.food_bank)
               ),
             ]
@@ -58,7 +54,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
             color: Colors.lightBlueAccent[300],
             borderRadius: const BorderRadius.all(Radius.circular(20))
         ),
-        child: GetRecipes(documentId: docID, type: "food", details: true),
+        child: GetRecipes(documentId: docID, type: widget.title , details: true),
     );
   }
 }

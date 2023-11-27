@@ -148,7 +148,7 @@ class _AddRecipesScreenState extends State<AddRecipesScreen> {
                     }
                     return null;
                   },
-                  maxLength: 15,
+                  maxLength: 20,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 ),
               ],

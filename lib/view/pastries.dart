@@ -89,7 +89,7 @@ class _PastriesScreenState extends State<PastriesScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index]))
+            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index], title: "pastries"))
         );
       },
       child:  Column(

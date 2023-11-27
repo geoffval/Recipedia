@@ -89,7 +89,7 @@ class _FoodScreenState extends State<FoodScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index]))
+            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index], title: "food"))
         );
       },
       child:  Column(

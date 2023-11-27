@@ -89,7 +89,7 @@ class _DrinkScreenState extends State<DrinkScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index]))
+            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index], title: "drink"))
         );
       },
       child:  Column(
