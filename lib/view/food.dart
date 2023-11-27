@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/controls/get_recipes.dart';
+import 'package:recipedia/view/recipes_detail.dart';
 
 class FoodScreen extends StatefulWidget {
   const FoodScreen({super.key});
@@ -93,6 +94,9 @@ class _FoodScreenState extends State<FoodScreen> {
           child: ListTile(
             title: GetRecipes(documentId: docIDs[index], type: "food", list: false, title: true,),
             subtitle: GetRecipes(documentId: docIDs[index], type: "food", list: true, title: false,),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => RecipeDetails())
+            )
           )
       );
   }
