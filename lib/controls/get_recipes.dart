@@ -31,6 +31,8 @@ Widget build(BuildContext context) {
         //This has to be like a very bad and hacky workaround, but no time to find another solution
         if (data != null && data['type'] == type && details == false) { //Full list with ingredients and steps
           return Card(
+            elevation: 0,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               side: BorderSide(
                 color: Theme.of(context).colorScheme.outline,
@@ -57,72 +59,157 @@ Widget build(BuildContext context) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                      flex: 2,
-                      child: Text('${data['name']}',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          )
-                      )
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                      flex: 2,
-                      child: Text('${data['desc']}',
-                      softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 16,
+              Card(
+                elevation: 0,
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                          child: Text('${data['name']}',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              )
+                          ),
+                        )
+                    ),
+                    IconButton(
+                        onPressed: () {
 
-                      )
+                        },
+                        icon: const Icon(
+                            Icons.edit,
+                            color: Colors.grey
+                        )
                     )
-                  )
-                ],
+                  ],
+                ),
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                      flex: 2,
-                      child: Text('${data['ingredients']}',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 16,
-                          )
-                      )
-                  ),
-                  Expanded(
-                      flex: 2,
-                      child: Text('${data['ingredients']}',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 16,
-                          )
-                      )
-                  )
-                ],
+              Card(
+                elevation: 0,
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text('${data['desc']}',
+                              softWrap: true,
+                              maxLines: 34,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                              )
+                          ),
+                        )
+                    ),
+                    IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: const Icon(
+                            Icons.edit,
+                            color: Colors.grey
+                        )
+                    )
+                  ],
+                ),
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                  flex: 2,
-                      child: Text('${data['steps']}',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 16,
-                      )
-                  ))
-                ],
+              Card(
+                elevation: 0,
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 5, 20),
+                          child: Text('Ingredients: ',
+                              style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold
+                              )
+                          ),
+                        )
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(5, 20, 20, 20),
+                          child: Text('${data['ingredients']}\n',
+                              style: const TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                              )
+                          ),
+                        )
+                    ),
+                    IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: const Icon(
+                            Icons.edit,
+                            color: Colors.grey
+                        )
+                    )
+                  ],
+                ),
+              ),
+              Card(
+                elevation: 0,
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(20, 20, 5, 20),
+                          child: Text('Steps: ',
+                              style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold
+                              )
+                          ),
+                        )
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(5, 20, 20, 20),
+                          child: Text('${data['steps']}\n',
+                              style: const TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                              )
+                          ),
+                        )
+                    ),
+                    IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: const Icon(
+                            Icons.edit,
+                            color: Colors.grey
+                        )
+                    )
+                  ],
+                ),
               ),
             ],
           );
