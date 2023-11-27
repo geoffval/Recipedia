@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 class GetRecipes extends StatelessWidget {
 final String documentId;
 final String type;
-final bool list;
-final bool title;
+final bool details;
 
-GetRecipes({required this.documentId,required this.type, required this.title,required this.list});
+
+GetRecipes({required this.documentId,required this.type, required this.details});
 
 
 @override
@@ -23,10 +23,11 @@ Widget build(BuildContext context) {
         Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
 
         //This has to be like a very bad and hacky workaround, but no time to find another solution
-        if (data != null && data['type'] == type && list == false && title == false) { //Full list with ingredients and steps
+        if (data != null && data['type'] == type && details == false) { //Full list with ingredients and steps
           return Container(
-              // padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
+              height: 150,
               decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: const BorderRadius.all(Radius.circular(20))
@@ -47,29 +48,60 @@ Widget build(BuildContext context) {
                             IconButton(onPressed: (){}, icon: Icon(Icons.edit))
                           ],
                         ),
-                        Text('Description: ${data['desc']}'),
+                        Flexible(child: OverflowBox(
+                          maxHeight: 200,
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                              'Description: ${data['desc']}',
+                              softWrap: true,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis // Enable text wrapping
+                          ),
+                        ))
                       ],
                     ),
                   )
               )
           );
-        } else if (data != null && data['type'] == type && list == true){ //Title only
+        }if (data != null && data['type'] == type && details == true) { //Full list with ingredients and steps
           return Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('${data['desc']}'),
-              ],
-            ),
-          );
-        } else if (data != null && data['type'] == type && list == false && title == true){ //Description only
-          return Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('${data['name']}'),
-              ],
-            ),
+              padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
+              height: 150,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: const BorderRadius.all(Radius.circular(20))
+              ),
+              child: ListTile(
+                  title: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Name: ${data['name']}',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 16
+                                )
+                            ),
+                            IconButton(onPressed: (){}, icon: Icon(Icons.edit))
+                          ],
+                        ),
+                        Flexible(child: OverflowBox(
+                          maxHeight: 200,
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                              'Description: ${data['desc']}',
+                              softWrap: true,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis // Enable text wrapping
+                          ),
+                        ))
+                      ],
+                    ),
+                  )
+              )
           );
         }
       }

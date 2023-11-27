@@ -56,7 +56,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
             color: Colors.grey[300],
             borderRadius: const BorderRadius.all(Radius.circular(20))
         ),
-        child: GetRecipes(documentId: docID, type: "food", list: true, title: false),
+        child: GetRecipes(documentId: docID, type: "food", details: true),
     );
   }
 }
