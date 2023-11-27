@@ -84,20 +84,19 @@ class _FoodScreenState extends State<FoodScreen> {
   }
 
   Widget buildList(int index) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: const BorderRadius.all(Radius.circular(20))
-      ),
-          child: ListTile(
-            title: GetRecipes(documentId: docIDs[index], type: "food", list: false, title: true,),
-            subtitle: GetRecipes(documentId: docIDs[index], type: "food", list: true, title: false,),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index]))
-            )
-          )
-      );
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index]))
+        );
+      },
+      child:  Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            GetRecipes(documentId: docIDs[index], type: "food", details: false)
+          ],
+        ),
+    );
   }
+
 }
