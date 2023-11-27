@@ -5,9 +5,9 @@ import 'package:recipedia/controls/get_recipes.dart';
 
 
 class RecipeDetails extends StatefulWidget {
-  //final String docID;
+  final String docID;
 
-  //RecipeDetails({required this.docID});
+  const RecipeDetails({super.key, required this.docID});
 
 
   @override
@@ -41,7 +41,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              buildPage('')
+              buildPage(widget.docID)
             ],
           ),
         )
@@ -56,7 +56,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
             color: Colors.grey[300],
             borderRadius: const BorderRadius.all(Radius.circular(20))
         ),
-        child: GetRecipes(documentId: docID, type: "food", list: true, title: false), 
+        child: GetRecipes(documentId: docID, type: "food", list: true, title: false),
     );
   }
 }

@@ -95,7 +95,7 @@ class _FoodScreenState extends State<FoodScreen> {
             title: GetRecipes(documentId: docIDs[index], type: "food", list: false, title: true,),
             subtitle: GetRecipes(documentId: docIDs[index], type: "food", list: true, title: false,),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => RecipeDetails())
+              MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index]))
             )
           )
       );

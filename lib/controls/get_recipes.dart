@@ -25,14 +25,33 @@ Widget build(BuildContext context) {
         //This has to be like a very bad and hacky workaround, but no time to find another solution
         if (data != null && data['type'] == type && list == false && title == false) { //Full list with ingredients and steps
           return Container(
-            child: Column(
-              children: [
-                Text('Name: ${data['name']}'),
-                Text('Description: ${data['desc']}'),
-                Text('Ingredients: ${data['ingredients']}'),
-                Text('Steps: ${data['steps']}'),
-              ],
-            ),
+              // padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: const BorderRadius.all(Radius.circular(20))
+              ),
+              child: ListTile(
+                  title: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Name: ${data['name']}',
+                              style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 16
+                              )
+                            ),
+                            IconButton(onPressed: (){}, icon: Icon(Icons.edit))
+                          ],
+                        ),
+                        Text('Description: ${data['desc']}'),
+                      ],
+                    ),
+                  )
+              )
           );
         } else if (data != null && data['type'] == type && list == true){ //Title only
           return Container(
@@ -52,13 +71,9 @@ Widget build(BuildContext context) {
               ],
             ),
           );
-        } else {
-          // Handle the case where data is null
-          return const Text('Data is null');
         }
       }
-
-      return const Text('Loading');
+      return Container();
     }),
   );
 }
