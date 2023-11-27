@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/controls/get_recipes.dart';
+import 'package:recipedia/view/recipes_detail.dart';
 
 class PastriesScreen extends StatefulWidget {
   const PastriesScreen({super.key});
@@ -33,7 +34,7 @@ class _PastriesScreenState extends State<PastriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('FOOD'),
+            title: Text('PASTRIES'),
             actions: const <Widget>[
               Padding(padding: const EdgeInsets.all(10.0),
                   child: Icon(Icons.food_bank)
@@ -83,16 +84,19 @@ class _PastriesScreenState extends State<PastriesScreen> {
   }
 
   Widget buildList(int index) {
-    return Container(
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
-        decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: const BorderRadius.all(Radius.circular(20))
-        ),
-        child: ListTile(
-
-        )
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index]))
+        );
+      },
+      child:  Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          GetRecipes(documentId: docIDs[index], type: "pastries", details: false)
+        ],
+      ),
     );
   }
+
 }

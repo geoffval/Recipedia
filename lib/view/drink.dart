@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/controls/get_recipes.dart';
+import 'package:recipedia/view/recipes_detail.dart';
 
 class DrinkScreen extends StatefulWidget {
   const DrinkScreen({super.key});
@@ -83,16 +84,19 @@ class _DrinkScreenState extends State<DrinkScreen> {
   }
 
   Widget buildList(int index) {
-    return Container(
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
-        decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: const BorderRadius.all(Radius.circular(20))
-        ),
-        child: ListTile(
-
-        )
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => RecipeDetails(docID: docIDs[index]))
+        );
+      },
+      child:  Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          GetRecipes(documentId: docIDs[index], type: "drink", details: false)
+        ],
+      ),
     );
   }
+
 }

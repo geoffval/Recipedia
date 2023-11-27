@@ -1,12 +1,18 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+Size size = view.physicalSize;
+double width = size.width;
+double height = size.height;
 
 class GetRecipes extends StatelessWidget {
 final String documentId;
 final String type;
 final bool details;
-
 
 GetRecipes({required this.documentId,required this.type, required this.details});
 
@@ -24,84 +30,101 @@ Widget build(BuildContext context) {
 
         //This has to be like a very bad and hacky workaround, but no time to find another solution
         if (data != null && data['type'] == type && details == false) { //Full list with ingredients and steps
-          return Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
-              height: 150,
-              decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(20))
+          return Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.outline,
               ),
-              child: ListTile(
-                  title: Container(
-                    child: Column(
-                      children: [
-                        Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Name: ${data['name']}',
-                              style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 16
-                              )
-                            ),
-                            IconButton(onPressed: (){}, icon: Icon(Icons.edit))
-                          ],
-                        ),
-                        Flexible(child: OverflowBox(
-                          maxHeight: 200,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                              'Description: ${data['desc']}',
-                              softWrap: true,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis // Enable text wrapping
-                          ),
-                        ))
-                      ],
-                    ),
-                  )
-              )
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+            ),
+               child: ListTile(
+                   title: Text('${data['name']}',
+                       style: TextStyle(
+                         fontFamily: 'Roboto',
+                         fontSize: 16,
+                         fontWeight: FontWeight.bold,
+                       )
+                   ),
+                   subtitle: Text(
+                       '${data['desc']}',
+                       softWrap: true,
+                       maxLines: 2,
+                       overflow: TextOverflow.ellipsis // Enable text wrapping
+                   ),
+               ),
           );
         }if (data != null && data['type'] == type && details == true) { //Full list with ingredients and steps
-          return Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
-              height: 150,
-              decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(20))
-              ),
-              child: ListTile(
-                  title: Container(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Name: ${data['name']}',
-                                style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 16
-                                )
-                            ),
-                            IconButton(onPressed: (){}, icon: Icon(Icons.edit))
-                          ],
-                        ),
-                        Flexible(child: OverflowBox(
-                          maxHeight: 200,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                              'Description: ${data['desc']}',
-                              softWrap: true,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis // Enable text wrapping
-                          ),
-                        ))
-                      ],
-                    ),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      flex: 2,
+                      child: Text('${data['name']}',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          )
+                      )
                   )
-              )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                      flex: 2,
+                      child: Text('${data['desc']}',
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 16,
+
+                      )
+                    )
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                      flex: 2,
+                      child: Text('${data['ingredients']}',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                          )
+                      )
+                  ),
+                  Expanded(
+                      flex: 2,
+                      child: Text('${data['ingredients']}',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                          )
+                      )
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                  flex: 2,
+                      child: Text('${data['steps']}',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 16,
+                      )
+                  ))
+                ],
+              ),
+            ],
           );
         }
       }

@@ -53,7 +53,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
         decoration: BoxDecoration(
-            color: Colors.grey[300],
+            color: Colors.lightBlueAccent[300],
             borderRadius: const BorderRadius.all(Radius.circular(20))
         ),
         child: GetRecipes(documentId: docID, type: "food", details: true),
