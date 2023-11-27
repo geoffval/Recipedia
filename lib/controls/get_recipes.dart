@@ -48,6 +48,8 @@ Widget build(BuildContext context) {
                           ],
                         ),
                         Text('Description: ${data['desc']}'),
+                        Text('Steps: ${data['steps']}'),
+                        Text('ingredients: ${data['ingredients']}')
                       ],
                     ),
                   )
