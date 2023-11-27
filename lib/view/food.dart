@@ -95,7 +95,7 @@ class _FoodScreenState extends State<FoodScreen> {
       child:  Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            GetRecipes(documentId: docIDs[index], type: "food", details: false)
+            GetRecipes(documentId: docIDs[index], type: "food", details: false),
           ],
         ),
     );

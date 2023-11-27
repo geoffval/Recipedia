@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipedia/models/delete_recipes.dart';
 import 'package:recipedia/models/edit_recipes.dart';
 
 FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
@@ -31,32 +32,55 @@ Widget build(BuildContext context) {
 
         //This has to be like a very bad and hacky workaround, but no time to find another solution
         if (data != null && data['type'] == type && details == false) { //Full list with ingredients and steps
-          return Card(
-            elevation: 0,
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: Theme.of(context).colorScheme.outline,
+          return Column(
+            children: [
+              Card(
+                elevation: 0,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                ),
+                   child: ListTile(
+                       title: Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: <Widget>[
+                           Text('${data['name']}',
+                               style: const TextStyle(
+                                 fontFamily: 'Roboto',
+                                 fontSize: 16,
+                                 fontWeight: FontWeight.bold,
+                               )
+                           ),
+                           IconButton(
+                             onPressed: () {
+                               DeleteRecipe.deleteRecipe(context,documentId);
+                             },
+                             icon: const Icon(
+                               Icons.delete,
+                               color: Colors.grey,
+                             ),
+                           ),
+                         ],
+                       ),
+                       subtitle: Text(
+                           '${data['desc']}',
+                           softWrap: true,
+                           maxLines: 2,
+                           overflow: TextOverflow.ellipsis // Enable text wrapping
+                       ),
+                   ),
               ),
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
-            ),
-               child: ListTile(
-                   title: Text('${data['name']}',
-                       style: TextStyle(
-                         fontFamily: 'Roboto',
-                         fontSize: 16,
-                         fontWeight: FontWeight.bold,
-                       )
-                   ),
-                   subtitle: Text(
-                       '${data['desc']}',
-                       softWrap: true,
-                       maxLines: 2,
-                       overflow: TextOverflow.ellipsis // Enable text wrapping
-                   ),
-               ),
+            ],
           );
-        }if (data != null && data['type'] == type && details == true) { // Full list with ingredients and steps
+        }
+
+
+
+        // Full list with ingredients and steps
+        if (data != null && data['type'] == type && details == true) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -72,7 +96,7 @@ Widget build(BuildContext context) {
                         padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                         child: Text(
                           '${data['name']}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -81,7 +105,16 @@ Widget build(BuildContext context) {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        String ?editedData = await showDialog(
+                          context: context,
+                          builder: (context) => EditDataDialog(initialData: data['name']),
+                        );
+                        if (editedData != null) {
+                          // Handle the edited data
+                          updateRecipeNameAndDesc(context, editedData,"name");
+                        }
+                      },
                       icon: const Icon(
                         Icons.edit,
                         color: Colors.grey,
@@ -113,7 +146,16 @@ Widget build(BuildContext context) {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                          String ?editedData = await showDialog(
+                            context: context,
+                            builder: (context) => EditDataDialog(initialData: data['desc']),
+                          );
+                          if (editedData != null) {
+                            // Handle the edited data
+                            updateRecipeNameAndDesc(context, editedData,"desc");
+                          }
+                        },
                       icon: const Icon(
                         Icons.edit,
                         color: Colors.grey,
@@ -147,14 +189,14 @@ Widget build(BuildContext context) {
                       flex: 3,
                       child: Column(
                         children: [
-                          for (var step in data['ingredients'])
+                          for (int index = 0; index < data['ingredients'].length; index++)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   child: Text(
-                                    ' - $step',
+                                    ' - ${data['ingredients'][index]}',
                                     softWrap: true,
                                     style: const TextStyle(
                                       fontFamily: 'Roboto',
@@ -164,14 +206,13 @@ Widget build(BuildContext context) {
                                 ),
                                 IconButton(
                                   onPressed: () async {
-                                    String editedData = await showDialog(
+                                    String ?editedData = await showDialog(
                                       context: context,
-                                      builder: (context) => EditDataDialog(initialData: step),
+                                      builder: (context) => EditDataDialog(initialData: data['ingredients'][index]),
                                     );
-
                                     if (editedData != null) {
                                       // Handle the edited data
-                                      print('Edited data: $editedData');
+                                      updateRecipe(context,index, editedData, "ingredients");
                                     }
                                   },
                                   icon: const Icon(
@@ -229,14 +270,13 @@ Widget build(BuildContext context) {
                                 ),
                                 IconButton(
                                   onPressed: () async {
-                                    String editedData = await showDialog(
+                                    String? editedData = await showDialog(
                                       context: context,
                                       builder: (context) => EditDataDialog(initialData: data['steps'][index]),
                                     );
                                     // Update DATA
-                                    print(editedData);
                                     if (editedData != null) {
-                                      updateRecipe(context,index, editedData);
+                                      updateRecipe(context,index, editedData, "steps");
                                     }
                                   },
                                   icon: const Icon(
@@ -263,18 +303,45 @@ Widget build(BuildContext context) {
 
 
 // UPDATE RECIPE
-  void updateRecipe(BuildContext context, int index, String editedData) async {
+  void updateRecipe(BuildContext context, int index, String editedData, String editType) async {
     // Reference to the document
     DocumentReference recipeDocRef = FirebaseFirestore.instance.collection('users').doc(user.email).collection('recipes').doc(documentId);
 
     // Get the current array
-    List<dynamic> currentSteps = (await recipeDocRef.get()).get('steps');
+    List<dynamic> currentSteps = (await recipeDocRef.get()).get(editType);
 
     // Update the array with the new data
     currentSteps[index] = editedData;
 
     // Update the document with the modified array
-    await recipeDocRef.update({'steps': currentSteps});
+    await recipeDocRef.update({editType : currentSteps});
+
+    // Show notif
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Recipe edited successfully'),
+        duration: Duration(seconds: 2),
+      ),
+    );
     Navigator.pop(context);
   }
+
+  void updateRecipeNameAndDesc(BuildContext context, editedData, String editType) async {
+    // reference to the document
+    DocumentReference recipeDocRef = FirebaseFirestore.instance.collection('users').doc(user.email).collection('recipes').doc(documentId);
+
+    // Update document
+    await recipeDocRef.update({editType : editedData});
+
+    // Show notif
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Recipe edited successfully'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    Navigator.pop(context);
+  }
+
 }
