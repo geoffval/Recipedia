@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipedia/controls/get_recipes.dart';
 
 class FoodScreen extends StatefulWidget {
   const FoodScreen({super.key});
@@ -7,266 +10,89 @@ class FoodScreen extends StatefulWidget {
   State createState() => _FoodScreenState();
 }
 
-
 class _FoodScreenState extends State<FoodScreen> {
   final scrollController = ScrollController();
+  final user = FirebaseAuth.instance.currentUser!;
+  final usersCollection = FirebaseFirestore.instance.collection('users');
 
+  //document IDs
+  List<String> docIDs = [];
+
+  Future getDocId() async{
+    //clears the list to prevent duplicates everytime getDocId gets called
+    docIDs.clear();
+    await usersCollection.doc(user.email).collection('recipes').get()
+    .then(
+        (snapshot) => snapshot.docs.forEach((document) {
+          docIDs.add(document.reference.id);
+        }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: Text('FOOD'),
-            actions: <Widget>[
+            actions: const <Widget>[
               Padding(padding: const EdgeInsets.all(10.0),
                   child: Icon(Icons.food_bank)
               ),
             ]
         ),
-        body: buildScroll()
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildSearch(),
+              _buildScroll(),
+            ],
+          ),
+        )
     );
   }
 
-  Widget buildScroll() {
+  Widget _buildScroll() {
     return Scrollbar(
-      child: ListView.builder(
-        controller: scrollController,
-        itemCount: 1,
-        itemBuilder: (context, index) => buildList(index)
+      child: FutureBuilder(
+          future: getDocId(),
+          builder: (context, snapshot){
+            return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                controller: scrollController,
+                itemCount: docIDs.length,
+                itemBuilder: (context, index) => buildList(index)
+            );
+          },
       ),
     );
   }
 
-  Column buildList(int index) {
-    return Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 10,right: 10),
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(10),
-                color: Color.fromRGBO(200, 200, 200, 0.8)
-              ),
-              child: Row(
-                mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      width: 130,
-                      height: 110,
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset('assets/images/food1.jpg')
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      margin: EdgeInsets.only(right: 20),
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Nasi Goreng Ayam'),
-                        SizedBox(height: 10),
-                        Text('Nasi Goreng dengan irisan ayam suwir')
-                      ],
-                    ),
-                    )
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              margin: EdgeInsets.only(left: 10,right: 10),
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromRGBO(200, 200, 200, 0.8)
-              ),
-              child: Row(
-                mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      width: 130,
-                      height: 110,
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset('assets/images/food2.jpg')
-                  ),
-                  Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color.fromRGBO(227, 233, 227, 1)
-                        ),
-                        margin: EdgeInsets.only(right: 20),
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Mie Ayam'),
-                            SizedBox(height: 10),
-                            Text('Mie dengan aromatic oil dan ayam cincang')
-                          ],
-                        ),
-                      )
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              margin: EdgeInsets.only(left: 10,right: 10),
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromRGBO(200, 200, 200, 0.8)
-              ),
-              child: Row(
-                mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      width: 130,
-                      height: 110,
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset('assets/images/food3.jpg')
-                  ),
-                  Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color.fromRGBO(227, 233, 227, 1)
-                        ),
-                        margin: EdgeInsets.only(right: 20),
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Bakso'),
-                            SizedBox(height: 10),
-                            Text('Bakso dengan daging sapi yang fresh')
-                          ],
-                        ),
-                      )
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              margin: EdgeInsets.only(left: 10,right: 10),
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromRGBO(200, 200, 200, 0.8)
-              ),
-              child: Row(
-                mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      width: 130,
-                      height: 110,
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset('assets/images/food4.jpg')
-                  ),
-                  Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color.fromRGBO(227, 233, 227, 1)
-                        ),
-                        margin: EdgeInsets.only(right: 20),
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Sate ayam'),
-                            SizedBox(height: 10),
-                            Text('Sate ayam khas madura')
-                          ],
-                        ),
-                      )
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              margin: EdgeInsets.only(left: 10,right: 10),
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromRGBO(200, 200, 200, 0.8)
-              ),
-              child: Row(
-                mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(227, 233, 227, 1)
-                      ),
-                      width: 130,
-                      height: 110,
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      child: Image.asset('assets/images/food5.jpg')
-                  ),
-                  Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color.fromRGBO(227, 233, 227, 1)
-                        ),
-                        margin: EdgeInsets.only(right: 20),
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Jamur Crispy'),
-                            SizedBox(height: 10),
-                            Text('Jamur putih yang digoreng dengan tepung')
-                          ],
-                        ),
-                      )
-                  ),
-                ],
-              ),
-            ),
+  Widget _buildSearch() {
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
+      padding: const EdgeInsets.all(15),
+      child: Row(
+        children: [
+          Icon(Icons.search, color: Colors.white,)
+        ],
+      ),
+    );
+  }
 
-
-          ]
+  Widget buildList(int index) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: const BorderRadius.all(Radius.circular(20))
+      ),
+          child: ListTile(
+            title: GetRecipes(documentId: docIDs[index], type: "food")
+          )
       );
   }
 }

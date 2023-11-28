@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipedia/view/forgotpw.dart';
 import 'package:recipedia/view/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildImage() {
     return Container(
-        padding: EdgeInsets.only(top:20),
+        padding: EdgeInsets.only(top:10),
         child: Align(
           alignment: FractionalOffset.center,
           child: Image.asset('assets/logo_recipedia.png', scale: 2),
@@ -95,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Enter your email',
-                    labelStyle: TextStyle(fontSize: 12),
+                    labelStyle: TextStyle(fontSize: 14),
+                    hintText: 'example@gmail.com', hintStyle: TextStyle(color: Colors.grey),
                   ),
                 )
               ],
@@ -103,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Container(
             width: 300,
-            height: 120,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,8 +120,13 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: !_passwordVisible,
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
-                      labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12),
+                    labelText: 'Enter your password',
+                    labelStyle: TextStyle(fontSize: 14),
+                    hintText: 'Password must be 6 letter length or more',
+                    hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _passwordVisible ? Icons.visibility : Icons.visibility_off,
@@ -143,7 +149,28 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                  TextButton(
+                    child: const Text('Forgot Password?'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.blue,
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+                      );
+                    },
+                  ),
+              ],
+            ),
+          ),
           SizedBox(
             width: 170,
             height: 60,

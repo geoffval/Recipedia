@@ -2,7 +2,8 @@
     <application
         android:label="recipedia"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
 
         <!-- Add your Firebase configurations here -->
         <!-- For example, if using Firebase Cloud Messaging, include the following meta-data -->

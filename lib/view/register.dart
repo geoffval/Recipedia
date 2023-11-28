@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipedia/controls/auth.dart';
@@ -15,6 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
 
@@ -25,27 +27,42 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+
+  // Register user
   Future _validate() async {
     final form = _formKey.currentState;
     if (!form!.validate()) {
       return;
     }
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.email)
+          .set({
+        'username' : _usernameController.text.trim(),
+        'email' : _emailController.text.trim(),
+        'password' : _passwordController.text.trim(),
+        'age' : _ageController.text.trim(),
+      });
+
       // Navigate to the home page after successful registration
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Auth()),
       );
-    } catch (e) {
-      print("Error registering user: $e");
-      // Handle registration error if necessary
+    } on FirebaseException catch (e) {
+      showDialog(context: context, builder: (context){
+        return AlertDialog(
+          content: Text(e.message.toString()),
+        );
+      });
     }
   }
-
 
 
   @override
@@ -103,7 +120,38 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your username',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 14)
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            width: 300,
+            height: 110,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Age',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextFormField(
+                  controller: _ageController,
+                  keyboardType: TextInputType.number,
+                  validator: (text) {
+                    if (text!.isEmpty){
+                      return 'Enter age!';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your age',
+                      labelStyle: TextStyle(fontSize: 14)
                   ),
                 )
               ],
@@ -137,7 +185,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your email',
-                      labelStyle: TextStyle(fontSize: 12)
+                      labelStyle: TextStyle(fontSize: 14),
+                    hintText: 'example@gmail.com', hintStyle: TextStyle(color: Colors.grey),
                   ),
                 )
               ],
@@ -168,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                       labelText: 'Enter your password',
-                      labelStyle: TextStyle(fontSize: 12),
+                      labelStyle: TextStyle(fontSize: 14),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _passwordVisible ? Icons.visibility : Icons.visibility_off,
