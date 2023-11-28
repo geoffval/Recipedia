@@ -91,7 +91,7 @@ class _DrinkScreenState extends State<DrinkScreen> {
             borderRadius: const BorderRadius.all(Radius.circular(20))
         ),
         child: ListTile(
-            title: GetRecipes(documentId: docIDs[index], type: "drink")
+
         )
     );
   }
