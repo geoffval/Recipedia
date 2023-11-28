@@ -30,6 +30,7 @@ Widget build(BuildContext context) {
       if (snapshot.connectionState == ConnectionState.done) {
         Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
 
+
         //This has to be like a very bad and hacky workaround, but no time to find another solution
         if (data != null && data['type'] == type && details == false) { //Full list with ingredients and steps
           return Column(

@@ -79,7 +79,7 @@ class _FoodScreenState extends State<FoodScreen> {
       padding: const EdgeInsets.all(15),
       child: Row(
         children: [
-          Icon(Icons.search, color: Colors.white,)
+          Icon(Icons.search, color: Colors.grey[100],)
         ],
       ),
     );
