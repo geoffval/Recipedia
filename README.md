@@ -8,8 +8,4 @@ Contributors:
 1. Nathanael Nelson
 
 # TO DO LIST
-1. Refactor code to use MVC Architecture
-1. Refactor code for ease of readability
-1. Back-end functionality
-   - Database connection
-   - Functioning GET, POST, PUT, DELETE
+1. None
