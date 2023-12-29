@@ -88,7 +88,9 @@ flutter:
   fonts:
     - family: Roboto
       fonts:
-          - asset: lib/fonts/RobotoCondensed-VariableFont_wght.ttf
+        - asset: lib/fonts/Roboto-Regular.ttf
+        - asset: lib/fonts/Roboto-Bold.ttf
+        - asset: lib/fonts/Roboto-Italic.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

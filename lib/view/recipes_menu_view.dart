@@ -22,6 +22,7 @@ class _RecipesPageState extends State<RecipesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.grey[100],
         title: Text('MENU'),
         actions: const <Widget>[
           Padding(padding: EdgeInsets.all(10.0),
@@ -29,21 +30,25 @@ class _RecipesPageState extends State<RecipesPage> {
           )
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-              flex: 3,
-              child: HomePageController(context)
-          )
-        ],
+      body: Container(
+        color: Colors.grey[200],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Expanded(
+                flex: 3,
+                child: HomePageController(context)
+            )
+          ],
+        ),
       ),
     );
   }
 
   Widget HomePageController(BuildContext context){
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -75,7 +80,8 @@ class _RecipesPageState extends State<RecipesPage> {
                             children: <Widget>[
                               Icon(
                                 Icons.fastfood,
-                                size: 62,)
+                                size: 62,
+                                  color: Colors.orangeAccent)
                             ],
                           )
                       )

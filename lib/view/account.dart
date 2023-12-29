@@ -7,11 +7,16 @@ import 'package:recipedia/view/forgotpw.dart';
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 
+
+
   @override
   State<AccountScreen> createState() => _AccountScreenState();
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // Add the following line
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final user = FirebaseAuth.instance.currentUser!;
   final usersCollection = FirebaseFirestore.instance.collection('users');
 
@@ -65,44 +70,73 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   // Logout Alert dialog
-  showAlertDialog(BuildContext context) {
-    Widget noButton = TextButton(
-      child: const Text("No"),
-      onPressed: () {
-        Navigator.of(context).pop();
-        return;
-      },
-    );
+  bool isWidgetMounted = true; // Add this variable
 
-    Widget yesButton = TextButton(
-      child: const Text("Yes"),
-      onPressed: () async {
-        Navigator.of(context).pop();
-        await FirebaseAuth.instance.signOut();
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp()));
-      },
-    );
+  // Logout Alert dialog
+  showAlertDialog(BuildContext context) async {
+    if (_scaffoldKey.currentState != null && formKey.currentState != null && formKey.currentState!.mounted) {
+      // Set the variable before showDialog
+      bool isWidgetMounted = true;
 
-    AlertDialog alert = AlertDialog(
-      title: const Text("You are about to logout"),
-      content: const Text("Are you sure?"),
-      actions: [
-        yesButton,
-        noButton,
-      ],
-    );
+      Widget noButton = TextButton(
+        child: const Text("No"),
+        onPressed: () {
+          Navigator.of(context).pop();
+          return;
+        },
+      );
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+      Widget yesButton = TextButton(
+        child: const Text("Yes"),
+        onPressed: () async {
+          Navigator.of(context).pop();
+          await FirebaseAuth.instance.signOut();
+
+          // Clear the current state and navigate to the login screen
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const MyApp()),
+                (Route<dynamic> route) => false,
+          );
+        },
+      );
+
+      AlertDialog alert = AlertDialog(
+        title: const Text("You are about to logout"),
+        content: const Text("Are you sure?"),
+        actions: [
+          yesButton,
+          noButton,
+        ],
+      );
+
+      // Check the variable before showing the dialog
+      if (isWidgetMounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext dialogContext) {
+            // Check if the widget is still in the tree
+            if (!formKey.currentState!.mounted) {
+              isWidgetMounted = false; // Update the variable if the widget is unmounted
+              return const SizedBox.shrink();
+            }
+
+            return alert;
+          },
+        );
+      }
+    }
   }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
       resizeToAvoidBottomInset : false,
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -141,6 +175,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   Widget _buildLoginForm(userData) {
     return Form(
+      key: formKey,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
